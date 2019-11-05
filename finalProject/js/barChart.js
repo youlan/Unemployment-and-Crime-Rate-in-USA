@@ -95,18 +95,41 @@ class BarPlot {
             .scale(xScale);
 
         let yAxis = d3.axisLeft()
-            .scale(yScale)
-            .ticks(null,"s");
+            .ticks(5)
+            .tickSize(-this.width)
+            .scale(yScale.nice());
 
-        d3.select("#y-axis")
+        //d3.select("#y-axis")
+        //    .attr("transform", "translate("+this.margin.left+"," + this.margin.top + ")")
+        //    .call(yAxis)
+        //    .call(g => g.select(".domain").remove());
+
+
+
+        d3.select("#y-axis").append('g').attr("class","grid")
             .attr("transform", "translate("+this.margin.left+"," + this.margin.top + ")")
-            .call(yAxis);
+            .call(yAxis)
+                //d3.axisLeft()
+            //    .ticks(5)
+              //  .tickSize(-this.width, 0, 0)
+              //  .tickFormat('')
+               // .scale(yScale))
+            .call(g => g.select(".domain").remove())
+            .call(g => g.selectAll(".tick:not(:first-of-type) line")
+            //.style("opacity",0.2)
+                .attr("stroke-opacity", 0.5)
+                .attr("stroke-dasharray", "2 2"))
+            .call(g => g.selectAll(".tick text")
+                .attr("x", -4)
+                .attr("dy", -4))
+            .style("stroke-fill", "white");
 
 
         d3.select("#x-axis")
             .attr("class","axis")
             .attr("transform", "translate("+this.margin.left+"," + (this.height+this.margin.top) + ")")
             .call(xAxis)
+            .call(g => g.select(".domain").remove())
             .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
@@ -120,25 +143,12 @@ class BarPlot {
             .attr("height",this.height)
             .attr("transform", "translate("+ this.margin.left + "," + this.margin.top + ")");
 
-        svg.append('g')
-            .attr("class",'y grid')
-            .call(d3.axisLeft()
-                .scale(this.yScale)
-                .tickSize(-this.width, 0, 0)
-                .tickFormat(''))
-            .style("opacity",0.2)
-            .style("stroke-fill", "white");
-
 
         let barplot = svg.selectAll("rect").data(plotData);
 
-
-
         let newbarplot = barplot.enter().append("rect");
 
-        barplot.exit()
-            .remove();
-
+        barplot.exit().remove();
 
         barplot =newbarplot.merge(barplot);
 
