@@ -152,7 +152,7 @@ class BarPlot {
 
         barplot =newbarplot.merge(barplot);
 
-        barplot
+        barplot.attr("id",function(d){console.log(d.state);return d.state})
             .attr("x", function (d){
                 return xScale(d.state);
             })
@@ -179,10 +179,16 @@ class BarPlot {
                     .attr("stroke","red")
                     .attr("stroke-width","3px")
                     .attr("stroke-dasharray", "3 6");
+                let state = "#"+this.id
+                d3.select(".mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",true)
+                //console.log(d3.selectAll("path").select(state))
+                //d3.selectAll("path").select(state).attr("fill","orange")
             })
             .on("mouseleave", function (actual,i) {
                 d3.select(this).style("opacity",1);
                 d3.select(".bars").selectAll('#limit').remove()
+                let state = "#"+this.id
+                d3.select(".mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
             });
 
         //console.log(this.xScale);
