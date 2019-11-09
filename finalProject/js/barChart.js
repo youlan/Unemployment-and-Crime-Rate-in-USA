@@ -152,7 +152,7 @@ class BarPlot {
 
         barplot =newbarplot.merge(barplot);
 
-        barplot.attr("id",function(d){console.log(d.state);return d.state})
+        barplot.attr("id",function(d){console.log(d.state);return d.state.replace(/[ ]/g,"")})
             .attr("x", function (d){
                 return xScale(d.state);
             })
