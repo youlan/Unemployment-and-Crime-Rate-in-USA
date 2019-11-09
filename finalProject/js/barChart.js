@@ -152,12 +152,12 @@ class BarPlot {
 
         barplot =newbarplot.merge(barplot);
 
-        barplot.attr("id",function(d){console.log(d.state);return d.state.replace(/[ ]/g,"")})
+        barplot.attr("id",function(d){return d.state.replace(/[ ]/g,"")})
             .attr("x", function (d){
                 return xScale(d.state);
             })
             .attr("y",function (d){
-                console.log(d.value);
+                //console.log(d.value);
                 return yScale(d.value)
             })
             .attr("width", xScale.bandwidth())

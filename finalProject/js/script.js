@@ -1,4 +1,4 @@
-
+d3.csv("data/unemployment_state.csv").then(unemstate=>{
 
     d3.csv("data/crimerate.csv").then(mapData => {
 
@@ -14,5 +14,8 @@
             .entries(mapData);
 
         const barChart = new BarPlot(data, this.activeYear)
-        console.log(data);
+        const mapChart = new Map(unemstate)
+        const lineChart = new Line(unemstate)
+        //console.log(data);
     });
+});

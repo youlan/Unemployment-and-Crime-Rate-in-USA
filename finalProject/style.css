@@ -36,3 +36,14 @@
 .selected{
     fill: orange;
 }
+.mapChart{
+    float:left;
+    width:1000px;
+    height:500px;
+}
+.bar-plot{
+    float:left;
+}
+.lineChart{
+    margin-left: 1000px
+}
