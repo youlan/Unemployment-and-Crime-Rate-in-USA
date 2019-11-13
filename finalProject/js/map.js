@@ -25,8 +25,8 @@ class Map{
               .attr("height", height + margin.top + margin.bottom)
               .attr("width", width +margin.left + margin.right)
 
-        let max = d3.max(this.unemstate,function(d){return parseFloat(d["Unempolyment-rate"])})
-        let min = d3.min(this.unemstate,function(d){return parseFloat(d["Unempolyment-rate"])})
+        let max = d3.max(this.unemstate,function(d){return parseFloat(d["Unemployment-rate"])})
+        let min = d3.min(this.unemstate,function(d){return parseFloat(d["Unemployment-rate"])})
         //console.log(max)
         let unemColorScale = d3.scaleLinear()
                                .domain([min,max])
@@ -47,6 +47,7 @@ class Map{
                            .attr('width', width + margin.left + margin.right)
                            .attr('height', height + margin.top + margin.bottom);
         let unemstate = this.unemstate
+        //console.log(unemstate)
         function ready(us) {
             //console.log(topojson.feature(us, us.objects.counties).features.filter(d=>(d.id-d.id%1000)/1000 ==55))
             //console.log(topojson.feature(us, us.objects.states).features.filter(d=>d.id == 55))
@@ -59,7 +60,7 @@ class Map{
                         let data = [];
                         for (let k = 0;k < 12; k++){
                             //console.log(this.unemstate[i])
-                            data[k] = {"year":unemstate[i+k]["Year"],"unemployment_rate":unemstate[i+k]["Unempolyment-rate"]}
+                            data[k] = {"year":unemstate[i+k]["Year"],"unemployment_rate":unemstate[i+k]["Unemployment-rate"]}
                         }
                         //console.log(data,test[j].properties.name,this.unemstate[i].State)
                         let new_test = {
@@ -70,6 +71,7 @@ class Map{
                                 "unemployment_data":data
                             }
                         test[j]=new_test
+                        //console.log(data)
                         break;
                     }
                 }
@@ -96,7 +98,7 @@ class Map{
                             //console.log(d)
                             let dataset = test;
                             //let dataset = topojson.feature(us, us.objects.states).features;
-                            console.log(dataset)
+                            //console.log(dataset)
                             return dataset;
                         })
                   .enter()
@@ -134,12 +136,14 @@ class Map{
                                                      .attr("stroke","red")
                                                      .attr("stroke-width","3px")
                                                      .attr("stroke-dasharray", "3 6");
+                                        d3.select(".lineChart").selectAll(state).classed("selectedPath",true)
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
                                     })
                   .on("mouseleave", function (d) {
                                         let state = "#"+this.id
                                         d3.select(".bars").selectAll(state).style("opacity",1)
+                                        d3.select(".lineChart").selectAll(state).classed("selectedPath",false)
                                         //d3.select(this).style("opacity",1);
                                         d3.select(".bars").selectAll('#limit').remove()
                                     });

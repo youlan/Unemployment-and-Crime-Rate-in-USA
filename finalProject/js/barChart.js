@@ -27,8 +27,8 @@ class BarPlot {
                 maxValue = parseInt(eachYear.rate) > maxValue ? parseInt(eachYear.rate) : maxValue;
             }
         }
-        console.log(maxValue);
-        console.log(minValue);
+        //console.log(maxValue);
+        //console.log(minValue);
 
         this.yScale = d3.scaleLinear()
             .range([this.height,0]);
@@ -46,7 +46,7 @@ class BarPlot {
             let sRate = parseInt(stateData.rate);
             this.activeData.push({"state":stateID,"value":sRate});
         }
-        console.log(this.activeData);
+        //console.log(this.activeData);
         this.drawDropDown();
         this.drawBarPlot();
         this.updateBarPlot();
@@ -181,6 +181,7 @@ class BarPlot {
                     .attr("stroke-dasharray", "3 6");
                 let state = "#"+this.id
                 d3.select(".mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",true)
+                d3.select(".lineChart").selectAll(state).classed("selectedPath",true)
                 //console.log(d3.selectAll("path").select(state))
                 //d3.selectAll("path").select(state).attr("fill","orange")
             })
@@ -189,6 +190,7 @@ class BarPlot {
                 d3.select(".bars").selectAll('#limit').remove()
                 let state = "#"+this.id
                 d3.select(".mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
+                d3.select(".lineChart").selectAll(state).classed("selectedPath",false)
             });
 
         //console.log(this.xScale);
