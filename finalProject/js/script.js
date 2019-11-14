@@ -1,21 +1,62 @@
-d3.csv("data/unemployment_state.csv").then(unemstate=>{
+loadData().then(mapData => {
 
-    d3.csv("data/crimerate.csv").then(mapData => {
+    //console.log(mapData);
+    this.activeState = null;
+    this.activeYear = "2007";
+    let that = this;
+    this.dataLabel = "sUnem";
+    //label: "sUnem", "sCrime"
 
+    //let listOfStates = mapData[this.dataLabel].map(d=>d.key);
 
-        this.activeYear = "2010";
-        let that = this;
+    const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel)
 
-        var data = d3.nest()
-            .key(function (d) {
-                //return d.Area.replace(/(^\s*)|(\s*$)/g, "");
-                return d.Area;
-            })
-            .entries(mapData);
+    console.log(mapData)
+    d3.csv("data/unemployment_state.csv").then(unemstate=>{
 
-        const barChart = new BarPlot(data, this.activeYear)
-        const mapChart = new Map(unemstate)
+        const mapChart = new Map(unemstate, this.activeYear, updateYear, updateState)
         const lineChart = new Line(unemstate)
+
+        function updateState() {
+            if(that.activeState == undefined || that.activeState == null){
+                return null;
+            }
+
+        }
+
+        function updateYear(year) {
+            this.activeYear = year;
+            console.log(year);
+            barChart.updateBarYear(year)
+        }
+
         //console.log(data);
     });
 });
+
+async function loadFile(file) {
+    let data = await d3.csv(file).then(d => {
+        var mapped = d3.nest()
+            .key(function (d) {
+              return d.State;
+            })
+            .entries(d);
+        return mapped;
+    });
+    //console.log(data);
+    return data;
+}
+
+async function loadData() {
+    let sUnData = await loadFile('data/unemployment_state.csv');
+    let sCrime = await loadFile('data/crimerate.csv');
+    //let cUnData = await loadFile('data/unemployment_country.csv');
+
+
+    //return [sUnem, cUnem, sCrime];
+    return {
+        'sUnem': sUnData,
+        'sCrime': sCrime
+        //'cUnem': cUnData,
+    };
+}

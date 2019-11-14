@@ -1,21 +1,72 @@
 class Map{
-    constructor(unemstate){
-        this.unemstate = unemstate
+    constructor(unemstate, activeyear, updateyear, updatestate){
+        this.unemstate = unemstate;
+        this.activeyear = activeyear;
+        this.updateYear = updateyear;
+        this.updateState = updatestate;
+        this.drawYearSlider();
         this.drawMap();
+    }
+
+    drawYearSlider(){
+        let that = this;
+        var dataTime = d3.range(0, 12).map(function(d) {
+            return new Date(2007 + d, 10, 3);
+        });
+
+        const showactiveYear = d3.select('div#slider-vertical').append("text").attr("id","htmlYear");
+        showactiveYear.attr("x", 160 )
+            .attr("y", 30)
+            .attr("align","center")
+            .classed("activeYear-background", true)
+            .html(this.activeyear);
+
+        var sliderVertical = d3
+            .sliderLeft()
+            .min(d3.min(dataTime))
+            .max(d3.max(dataTime))
+            .step(1000 * 60 * 60 * 24 * 365)
+            .height(400)
+            .tickFormat(d3.timeFormat('%Y'))
+            .tickValues(dataTime)
+            .ticks(12)
+            .default(new Date(2007, 10, 3))
+            .on('onchange', val => {
+                let activeyear = d3.timeFormat('%Y')(val);
+                that.updateYear(activeyear);
+                d3.select("#htmlYear").html(activeyear);
+                //that.updateMap(activeyear);
+                //that.activeyear = activeyear
+            });
+
+        var gVertical = d3
+            .select('div#slider-vertical')
+            .append('svg')
+            .attr('width', 100)
+            .attr('height', 500)
+            .append('g')
+            .attr('transform', 'translate(90, 40)');
+
+        gVertical.call(sliderVertical);
+
+
+
     }
 
     drawMap(){
         let margin = {
             top:10,
             bottom:10,
-            left:10,
-            right:10
+            left:0,
+            right:0
         };
-        let width = (parseInt(d3.select(".mapChart").style("width")) - margin.left - margin.right);
+        //console.log(this.activeyear);
+        //let width = (parseInt(d3.select("div#mapChart").style("width")) - margin.left - margin.right);
+        let width = 900;
         let mapRatio = 0.5;
         let height = width * mapRatio;
         let active = d3.select(null);
-        let mapSvg = d3.select(".mapChart")
+        let mapSvg = d3.select("div#mapChart")
                        .append("svg")
                        .attr("class","center-container")
                        .attr("height", height + margin.top + margin.bottom)
@@ -116,16 +167,10 @@ class Map{
                                })
                   .on("click",clicked)
                   .on('mouseenter', function (d) {
-                                        let state = "#"+this.id
-                                        let staterect = d3.select(".bars").selectAll(state)
-                                        staterect.style("opacity",0.5)
-                                        //console.log(staterect.datum().value)
-                                        let yScale = d3.scaleLinear()
-                                                       .range([280,0])
-                                                       .domain([0,660])
-                                                       .nice();
-                                        const y = yScale(staterect.datum().value)
-                                        //console.log(y)
+                                        let state = "#"+this.id;
+                                        let staterect = d3.select("div#bar-plot").selectAll(state);
+                                        staterect.style("opacity",0.5);
+                                        const y = staterect.attr("y");
                                         var line = d3.select(".bars")
                                                      .append("line")
                                                      .attr('id', 'limit')
@@ -136,14 +181,14 @@ class Map{
                                                      .attr("stroke","red")
                                                      .attr("stroke-width","3px")
                                                      .attr("stroke-dasharray", "3 6");
-                                        d3.select(".lineChart").selectAll(state).classed("selectedPath",true)
+                                        d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
                                     })
                   .on("mouseleave", function (d) {
                                         let state = "#"+this.id
                                         d3.select(".bars").selectAll(state).style("opacity",1)
-                                        d3.select(".lineChart").selectAll(state).classed("selectedPath",false)
+                                        d3.select("div#lineChart").selectAll(state).classed("selectedPath",false)
                                         //d3.select(this).style("opacity",1);
                                         d3.select(".bars").selectAll('#limit').remove()
                                     });
@@ -186,7 +231,9 @@ class Map{
                   .style("stroke-width", "1.5px")
                   .attr('transform', 'translate('+margin.left+','+margin.top+')');
         }
+
     }
+
 }
 
 

@@ -5,7 +5,7 @@ class Line{
 		this.drawupdate(unemstate,"unemployment");
 	}
 	drawInit(){
-		let linesvg = d3.select(".lineChart")
+		let linesvg = d3.select("div#lineChart")
 		                .append("svg")
 		             	.attr("width",580)
 		                .attr("height",550)
@@ -23,7 +23,7 @@ class Line{
 	}
 	drawupdate(activedata,type){
 		let that = this
-        let linesvg = d3.select(".lineChart").select("svg").data(activedata);
+        let linesvg = d3.select("div#lineChart").select("svg").data(activedata);
         let oldaxis = linesvg.selectAll(".axisy").remove()
         if (type == "unemployment"){
         	linesvg.selectAll(".lines").remove()

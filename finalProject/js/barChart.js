@@ -8,30 +8,37 @@ class barData{
 }
 
 class BarPlot {
-    constructor(data, activeYear) {
+    constructor(data, activeYear, label) {
         this.margin = {top: 20, right: 20, bottom: 100, left: 80};
         this.width = 1400 - this.margin.left - this.margin.right;
         this.height = 400 - this.margin.top - this.margin.bottom;
         this.activeYear = activeYear;
-        this.data = data;
+        this.data = data[label];
+        this.label = label;
 
         let minValue = Infinity;
         let maxValue = -Infinity;
         for (let key of d3.keys(this.data)){
             //console.log(key);
             let karray = this.data[key];
-            //console.log(karray);
+
             for (let eachYear of karray.values){
-                //console.log(eachYear);
-                minValue = parseInt(eachYear.rate) < minValue ? parseInt(eachYear.rate) : minValue;
-                maxValue = parseInt(eachYear.rate) > maxValue ? parseInt(eachYear.rate) : maxValue;
+                let that = this;
+                let sRate = null;
+                if(that.label == "sUnem"){
+                    sRate = parseFloat(eachYear["Unemployment-rate"]);
+                }else {
+                    sRate = parseFloat(eachYear.rate);
+                }
+                minValue = sRate < minValue ? sRate : minValue;
+                maxValue = sRate > maxValue ? sRate : maxValue;
             }
         }
-        //console.log(maxValue);
-        //console.log(minValue);
 
         this.yScale = d3.scaleLinear()
-            .range([this.height,0]);
+            .range([this.height,0])
+            .domain([0,maxValue])
+            .nice();
 
         this.xScale = d3.scaleBand()
             .range([0,this.width])
@@ -40,22 +47,29 @@ class BarPlot {
         this.activeData = [];
 
         for (let sID of d3.keys(this.data)){
+            let that = this;
             let stateID = this.data[sID].key;
             let stateData = this.data[sID].values.find(d => d.Year == this.activeYear);
             //console.log(stateData);
-            let sRate = parseInt(stateData.rate);
+            let sRate = null;
+            if(that.label == "sUnem"){
+                sRate = parseFloat(stateData["Unemployment-rate"]);
+            }else {
+                sRate = parseFloat(stateData.rate);
+            }
+
             this.activeData.push({"state":stateID,"value":sRate});
         }
         //console.log(this.activeData);
         this.drawDropDown();
         this.drawBarPlot();
-        this.updateBarPlot();
+        this.updateBarPlot(this.activeYear);
 
     }
 
     drawBarPlot(){
 
-         d3.select(".bar-plot").append("svg").attr("class","barChart")
+         d3.select("div#bar-plot").append("svg").attr("class","barChart")
             .attr("width", 1400)
             .attr("height", 400);
          this.svgGroup = d3.select(".barChart");
@@ -68,11 +82,8 @@ class BarPlot {
     }
 
     updateBarPlot(){
-
         let that = this;
         let activeYear = that.activeYear;
-
-        //console.log(activeYear);
         let plotData = this.activeData;
 
         let xScale = this.xScale
@@ -87,15 +98,15 @@ class BarPlot {
                 maxValue = d.value;
             }});
         //console.log(maxValue);
-        let yScale = this.yScale
-            .domain([0,maxValue])
-            .nice();
+        let yScale = this.yScale;
+            //.domain([0,maxValue])
+            //.nice();
 
         let xAxis = d3.axisBottom()
             .scale(xScale);
 
         let yAxis = d3.axisLeft()
-            .ticks(5)
+            .ticks(6)
             .tickSize(-this.width)
             .scale(yScale.nice());
 
@@ -103,17 +114,13 @@ class BarPlot {
         //    .attr("transform", "translate("+this.margin.left+"," + this.margin.top + ")")
         //    .call(yAxis)
         //    .call(g => g.select(".domain").remove());
-
+        d3.select("#y-axis").selectAll(".grid").remove();
+        d3.select("#x-axis").selectAll(".axis").remove();
 
 
         d3.select("#y-axis").append('g').attr("class","grid")
             .attr("transform", "translate("+this.margin.left+"," + this.margin.top + ")")
             .call(yAxis)
-                //d3.axisLeft()
-            //    .ticks(5)
-              //  .tickSize(-this.width, 0, 0)
-              //  .tickFormat('')
-               // .scale(yScale))
             .call(g => g.select(".domain").remove())
             .call(g => g.selectAll(".tick:not(:first-of-type) line")
             //.style("opacity",0.2)
@@ -202,7 +209,7 @@ class BarPlot {
 
         let dropData = ["Alphabetical", "Frequency, ascending", "Frequency, descending"]
 
-        var dropdown = d3.select(".bar-plot").append("g")
+        var dropdown = d3.select("div#sorting-button").append("g")
             .attr("transform", "translate("+ this.width+ "," + this.margin.top + ")")
             .append("select")
             .attr("id", "sortingSelector")
@@ -227,8 +234,8 @@ class BarPlot {
 
     dropdownChange(s){
         let that = this;
-
-        this.activeData = this.activeData.sort(function (a,b) {
+        //console.log(this.activeData);
+        const data = this.activeData.sort(function (a,b) {
             let result =0;
             let stateA = a.state.toLowerCase();
             let stateB = b.state.toLowerCase();
@@ -267,9 +274,51 @@ class BarPlot {
                     return result;
                     break;
             }});
-        console.log(this.activeData);
+
+        const t = d3.select(".barChart").transition()
+            .duration(1000);
+        let plotData = this.activeData;
+
+        let xScale = this.xScale
+            .domain(plotData.map(function (d) {
+                return d.state;
+            }));
+        let xAxis = d3.axisBottom()
+            .scale(xScale);
+        console.log(data);
+        //console.log(d3.selectAll("rect"));
+        d3.select("div#bar-plot").selectAll("rect").data(data, d=>d.state)
+            .order()
+            .transition(t)
+            .delay((d,i)=>i*20)
+            .attr("x", function (d){
+                return xScale(d.state);
+            });
+
+        d3.select("#x-axis").transition(t)
+            .call(xAxis)
+            .selectAll(".tick")
+            .delay((d,i)=>i*20);
+
+    }
+
+    updateBarYear(year){
+        let that = this;
+        this.activeYear = year;
+        this.activeData = [];
+
+        for (let sID of d3.keys(that.data)){
+            let stateID = that.data[sID].key;
+            let stateData = that.data[sID].values.find(d => d.Year == this.activeYear);
+            let sRate = null;
+            if(that.label == "sUnem"){
+                sRate = parseFloat(stateData["Unemployment-rate"]);
+            }else {
+                sRate = parseFloat(stateData.rate);
+            }
+            this.activeData.push({"state":stateID,"value":sRate});
+        }
 
         that.updateBarPlot();
-
     }
 }
