@@ -38,7 +38,7 @@
 }
 .mapChart{
     float:left;
-    width:1000px;
+    width:900px;
     height:500px;
 }
 .bar-plot{
@@ -54,4 +54,15 @@
     stroke:red;
     stroke-width:3;
     opacity: 1;
+}
+
+
+.mapline{
+    display: flex;
+    align-items: stretch;
+}
+
+.activeYear-background {
+    font-size: 50px;
+    opacity: .4;
 }

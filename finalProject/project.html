@@ -14,21 +14,22 @@
     <script src="js/script.js" async></script>
     <script src="js/barChart.js" async></script>
     <script type="application/javascript" src="js/line.js"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
+    <script type="application/javascript" src="js/map.js"></script>
 </head>
 <body>
     <div class="header">
         <h1>Unemployment and Crime Rate across US</h1>
     </div>
     <div class= mapline>
-    <div class="mapChart"></div>
-    <script type="application/javascript" src="js/map.js"></script>
-    <div class="lineChart"></div>
-
+        <div id="slider-vertical"></div>
+        <div id="mapChart"></div>
+        <div id="lineChart"></div>
     </div>
-    <div class="bar-plot">
-
+    <div class="row align-items-center">
+        <div class="col-sm-2"><div id="sorting-button"></div></div>
+        <div class="col-sm"><div id="bar-plot"></div></div>
     </div>
-
 
 </body>
 </html>
