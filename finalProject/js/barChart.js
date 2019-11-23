@@ -45,19 +45,24 @@ class BarPlot {
             .padding(0.1);
 
         this.activeData = [];
-
+        //console.log(this.data)
+        //console.log(this.activeYear)
         for (let sID of d3.keys(this.data)){
+            
             let that = this;
             let stateID = this.data[sID].key;
+            if(stateID == "UnitedStatesTotal"){
+                continue;
+            }
             let stateData = this.data[sID].values.find(d => d.Year == this.activeYear);
             //console.log(stateData);
             let sRate = null;
             if(that.label == "sUnem"){
                 sRate = parseFloat(stateData["Unemployment-rate"]);
             }else {
-                sRate = parseFloat(stateData.rate);
+                sRate = parseFloat(stateData["rate"]);
             }
-
+            
             this.activeData.push({"state":stateID,"value":sRate});
         }
         //console.log(this.activeData);
@@ -68,7 +73,7 @@ class BarPlot {
     }
 
     drawBarPlot(){
-
+         //console.log("here")
          d3.select("div#bar-plot").append("svg").attr("class","barChart")
             .attr("width", 1400)
             .attr("height", 400);
@@ -150,7 +155,7 @@ class BarPlot {
             .attr("height",this.height)
             .attr("transform", "translate("+ this.margin.left + "," + this.margin.top + ")");
 
-
+        //console.log(plotData)
         let barplot = svg.selectAll("rect").data(plotData);
 
         let newbarplot = barplot.enter().append("rect");
@@ -159,14 +164,14 @@ class BarPlot {
 
         barplot =newbarplot.merge(barplot);
 
-        barplot.attr("id",function(d){return d.state.replace(/[ ]/g,"")})
+        barplot.attr("id",function(d){let nospace = d.state.replace(/[ ]/g,"");return nospace})
             .attr("x", function (d){
                 return xScale(d.state);
             })
             .attr("y",function (d){
                 //console.log(d.value);
                 return yScale(d.value)
-            })
+               })
             .attr("width", xScale.bandwidth())
             .attr("height",function (d) {
                 return that.height - yScale(d.value);
@@ -174,6 +179,7 @@ class BarPlot {
             .style("fill", "teal")
             .style("opacity",1)
             .on('mouseenter', function (actual, i) {
+                //console.log(d)
                 d3.select(this).style("opacity",0.5)
                 const y = yScale(actual.value)
                 //console.log(y)
@@ -187,8 +193,9 @@ class BarPlot {
                     .attr("stroke-width","3px")
                     .attr("stroke-dasharray", "3 6");
                 let state = "#"+this.id
-                d3.select(".mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",true)
-                d3.select(".lineChart").selectAll(state).classed("selectedPath",true)
+                d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",true)
+                d3.select("#lineChart").selectAll(state).classed("selectedPath",true)
+                d3.select("div#lineChart").selectAll("#linename").text(actual.state)
                 //console.log(d3.selectAll("path").select(state))
                 //d3.selectAll("path").select(state).attr("fill","orange")
             })
@@ -196,10 +203,11 @@ class BarPlot {
                 d3.select(this).style("opacity",1);
                 d3.select(".bars").selectAll('#limit').remove()
                 let state = "#"+this.id
-                d3.select(".mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
-                d3.select(".lineChart").selectAll(state).classed("selectedPath",false)
+                d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
+                d3.select("#lineChart").selectAll(state).classed("selectedPath",false)
+                d3.select("div#lineChart").selectAll("#linename").text("")
             });
-
+        
         //console.log(this.xScale);
 
     }

@@ -55,7 +55,11 @@
     stroke-width:3;
     opacity: 1;
 }
-
+.linespace{
+    stroke:black;
+    stroke-dasharray: 2 2;
+    opacity: 0.5;
+}
 
 .mapline{
     display: flex;
@@ -65,4 +69,8 @@
 .activeYear-background {
     font-size: 50px;
     opacity: .4;
+}
+body{
+     /*background:#2a3039;*/
+
 }
