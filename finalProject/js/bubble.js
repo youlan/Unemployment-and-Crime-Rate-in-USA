@@ -17,8 +17,8 @@ class bubblePlot {
 
 
         this.margin = { top: 20, right: 20, bottom: 60, left: 80 };
-        this.width = 810 - this.margin.left - this.margin.right;
-        this.height = 810 - this.margin.top - this.margin.bottom;
+        this.width = 900 - this.margin.left - this.margin.right;
+        this.height = 600 - this.margin.top - this.margin.bottom;
 
         this.data = data;
         this.activeyear = activeyear;
@@ -109,18 +109,6 @@ class bubblePlot {
     drawPlot(){
         d3.select("#bubbleChart").append("div").attr("id","chart-view");
 
-        d3.select('#chart-view')
-            .append('svg').classed('plot-svg', true)
-            .attr("width", this.width + this.margin.left + this.margin.right)
-            .attr("height", this.height + this.margin.top + this.margin.bottom);
-
-        this.svgGroup = d3.select('#chart-view').select('.plot-svg').append('g');
-
-        this.svgGroup.append("g").attr("id","x-axis");
-        this.svgGroup.append("text").attr("id", "xaxis-label");
-        this.svgGroup.append("g").attr("id","y-axis");
-        this.svgGroup.append("text").attr("id", "yaxis-label");
-
 
         let dropdownWrap = d3.select('#chart-view').append('div').classed('dropdown-wrapper', true);
 
@@ -163,11 +151,24 @@ class bubblePlot {
 
 
         d3.select('#chart-view')
+            .append('svg').classed('plot-svg', true)
+            .attr("width", this.width + this.margin.left + this.margin.right)
+            .attr("height", this.height + this.margin.top + this.margin.bottom);
+
+        this.svgGroup = d3.select('#chart-view').select('.plot-svg').append('g');
+
+        this.svgGroup.append("g").attr("id","x-axis");
+        this.svgGroup.append("text").attr("id", "xaxis-label");
+        this.svgGroup.append("g").attr("id","y-axis");
+        this.svgGroup.append("text").attr("id", "yaxis-label");
+
+        d3.select('#chart-view')
             .append('div')
             .classed('circle-legend', true)
             .append('svg')
             .append('g')
             .attr('transform', 'translate(10, 0)');
+
 
 
     }
