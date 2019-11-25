@@ -1,30 +1,30 @@
 class Map{
-    constructor(unemstate, crimerate, activeyear, updateyear, updatestate, lineChart, mapData){
+    constructor(unemstate, crimerate, activeyear, updateyear, updatestate,updateOverview, lineChart){
         this.unemstate = unemstate;
         this.crimerate = crimerate;
         this.activeyear = activeyear;
         this.updateYear = updateyear;
         this.updateState = updatestate;
         this.lineChart = lineChart;
-        this.mapData = mapData;
         this.drawYearSlider();
         this.drawMap();
         this.un_max = d3.max(this.unemstate,function(d){return parseFloat(d["Unemployment-rate"])})
         this.un_min = d3.min(this.unemstate,function(d){return parseFloat(d["Unemployment-rate"])})
         this.currview = 1
+        this.updateOverview = updateOverview;
     }
 
-    drawYearSlider(){
+    drawYearSlider() {
         let that = this;
-        var dataTime = d3.range(0, 12).map(function(d) {
+        var dataTime = d3.range(0, 12).map(function (d) {
             return new Date(2007 + d, 10, 3);
         });
 
         const showactiveYear = d3.select('div#slider-vertical').append("svg").attr('width', 150)
-            .attr('height', 500).append("text").attr("id","htmlYear");
-        showactiveYear.attr("x", 20 )
+            .attr('height', 500).append("text").attr("id", "htmlYear");
+        showactiveYear.attr("x", 20)
             .attr("y", 250)
-            .attr("align","center")
+            .attr("align", "center")
             .classed("activeYear-background", true)
             .html(this.activeyear);
 
@@ -49,33 +49,37 @@ class Map{
                 //let min = d3.min(this.unemstate,function(d){return parseFloat(d["Unemployment-rate"])})
                 //console.log(that.currview)
                 let unemColorScale = d3.scaleLinear()
-                               .domain([this.un_min,this.un_max])
-                               .range([0,1]);
-                let cr_max = d3.max(this.crimerate,function(d){return parseFloat(d["rate"])})
-                let cr_min = d3.min(this.crimerate,function(d){return parseFloat(d["rate"])})
+                    .domain([this.un_min, this.un_max])
+                    .range([0, 1]);
+                let cr_max = d3.max(this.crimerate, function (d) {
+                    return parseFloat(d["rate"])
+                })
+                let cr_min = d3.min(this.crimerate, function (d) {
+                    return parseFloat(d["rate"])
+                })
                 let crColorScale = d3.scaleLinear()
-                               .domain([cr_min,cr_max])
-                               .range([0,1]);
-                statearea.attr("fill",function(d){
-                                  if(that.currview == 1){
-                                      if(d.unemployment_data != undefined){
-                                          //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
-                                          return(d3.interpolateBlues(unemColorScale(d.unemployment_data[activeyear-2007].unemployment_rate)))
-                                      }
-                                  }
-                                  if(that.currview == 2){
-                                      if(d.crimerate != undefined){
-                                          //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
-                                          return(d3.interpolateReds(crColorScale(d.crimerate[activeyear-2007].crimerate)))
-                                      }
-                                  }
-                              })
+                    .domain([cr_min, cr_max])
+                    .range([0, 1]);
+                statearea.attr("fill", function (d) {
+                    if (that.currview == 1) {
+                        if (d.unemployment_data != undefined) {
+                            //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
+                            return (d3.interpolateBlues(unemColorScale(d.unemployment_data[activeyear - 2007].unemployment_rate)))
+                        }
+                    }
+                    if (that.currview == 2) {
+                        if (d.crimerate != undefined) {
+                            //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
+                            return (d3.interpolateReds(crColorScale(d.crimerate[activeyear - 2007].crimerate)))
+                        }
+                    }
+                })
                 let x_scale = d3.scaleLinear()
-                    .domain([2007,2018])
-                    .range([0,520])
+                    .domain([2007, 2018])
+                    .range([0, 520])
                     .nice()
                 console.log(d3.select("#lineChart").select("#yearline"))
-                let yearline = d3.select("#lineChart").select("#yearline").attr("x1",x_scale(activeyear)).attr("x2",x_scale(activeyear))
+                let yearline = d3.select("#lineChart").select("#yearline").attr("x1", x_scale(activeyear)).attr("x2", x_scale(activeyear))
                 //that.updateMap(activeyear);
                 //that.activeyear = activeyear
             });
@@ -90,19 +94,18 @@ class Map{
 
         gVertical.call(sliderVertical);
 
-
-
     }
 
+
     drawMap(){
-        let that = this
+        let that = this;
         let margin = {
             top:10,
             bottom:10,
             left:0,
             right:0
         };
-        //console.log(this.activeyear);
+        console.log(this.activeyear);
         //let width = (parseInt(d3.select("div#mapChart").style("width")) - margin.left - margin.right);
         let width = 900;
         let mapRatio = 0.5;
@@ -143,26 +146,31 @@ class Map{
         let crimerate = this.crimerate
         //console.log(crimerate)
         let selection_button = d3.select(".btn-group").selectAll("button").data([1,2,3])
-        console.log(selection_button)
+
         selection_button.on("click",function(d){
-          that.currview = d
-          //console.log(d)
-          //console.log(that.lineChart)
-          if(d == 1){
-            that.lineChart.drawupdate(that.unemstate, "unemployment")
-            d3.select("#bar-plot").select("svg").remove();
-            console.log(d3.select("#sorting-button").select("g"))
-            d3.select("#sorting-button").select("g").remove();
-            //console.log(that.mapData, that.activeYear)
-            const barChart = new BarPlot(that.mapData, that.activeyear, "sUnem")
-          }
-          if(d == 2){
-            that.lineChart.drawupdate(that.crimerate, "crime")
-            d3.select("#bar-plot").select("svg").remove();
-            d3.select("#sorting-button").select("g").remove();
-            //console.log(that.mapData, that.activeYear)
-            const barChart = new BarPlot(that.mapData, that.activeyear, "sCrime")
-          }
+            that.currview = d
+            //console.log(d)
+            //console.log(that.lineChart)
+            if(d == 1){
+                that.lineChart.drawupdate(that.unemstate, "unemployment")
+                //d3.select("#bar-plot").select("svg").remove();
+                //console.log(d3.select("#sorting-button").select("g"))
+                //d3.select("#sorting-button").select("g").remove();
+                //console.log(that.mapData, that.activeYear)
+                //const barChart = new BarPlot(that.mapData, that.activeyear, "sUnem")
+                that.updateOverview("unemployment");
+            }
+            if(d == 2){
+                that.lineChart.drawupdate(that.crimerate, "crime")
+                //d3.select("#bar-plot").select("svg").remove();
+                //d3.select("#sorting-button").select("g").remove();
+                //console.log(that.mapData, that.activeYear)
+                //const barChart = new BarPlot(that.mapData, that.activeyear, "sCrime")
+                that.updateOverview("crime");
+            }
+            if(d == 3){
+            }
+
           let statearea = d3.select("#mapChart").select("#states").selectAll("path")
           let cr_max = d3.max(that.crimerate,function(d){return parseFloat(d["rate"])})
           let cr_min = d3.min(that.crimerate,function(d){return parseFloat(d["rate"])})

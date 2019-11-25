@@ -1,22 +1,26 @@
 loadData().then(mapData => {
 
-    console.log(mapData);
+
     this.activeState = null;
     this.activeYear = "2007";
     let that = this;
-    this.dataLabel = "sUnem";
-    //label: "sUnem", "sCrime"
-    
-    //let listOfStates = mapData[this.dataLabel].map(d=>d.key);
+    this.dataLabel = "unemployment";
 
-    const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel)
 
-    console.log(mapData)
+    //
+
+
+    //console.log(mapData);
     d3.csv("data/unemployment_state.csv").then(unemstate=>{
         d3.csv("data/crimerate.csv").then(crimerate=>{
-            //console.log(crimerate)
+
             const lineChart = new Line(unemstate, crimerate)
-            const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, lineChart, mapData)
+            const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, updateOverview, lineChart, mapData, this.dataLabel)
+
+
+            const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
+
+            //const bubbleChart = new bubblePlot(mapData, this.activeYear);
             function updateState() {
                 if(that.activeState == undefined || that.activeState == null){
                     return null;
@@ -27,8 +31,17 @@ loadData().then(mapData => {
             function updateYear(year) {
                 this.activeYear = year;
                 //console.log(year);
-                barChart.updateBarYear(year)
+                barChart.updateBarYear(year);
+                //bubbleChart.updateYear(year);
+
             }
+
+            function updateOverview(label) {
+                //console.log(label);
+                this.dataLabel = label;
+                barChart.ChangeOverView(label);
+            }
+
 
             //console.log(data);
         });
@@ -51,13 +64,15 @@ async function loadFile(file) {
 async function loadData() {
     let sUnData = await loadFile('data/unemployment_state.csv');
     let sCrime = await loadFile('data/crimerate.csv');
-    //let cUnData = await loadFile('data/unemployment_country.csv');
+    let sIncome = await loadFile('data/finalincomebystate.csv');
+    let sPopulation = await  loadFile("data/populations.csv")
 
 
     //return [sUnem, cUnem, sCrime];
     return {
-        'sUnem': sUnData,
-        'sCrime': sCrime
-        //'cUnem': cUnData,
+        'unemployment': sUnData,
+        'crime': sCrime,
+        'income': sIncome,
+        "population":sPopulation
     };
 }

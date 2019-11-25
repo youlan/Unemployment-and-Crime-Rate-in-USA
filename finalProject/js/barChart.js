@@ -13,32 +13,11 @@ class BarPlot {
         this.width = 1400 - this.margin.left - this.margin.right;
         this.height = 400 - this.margin.top - this.margin.bottom;
         this.activeYear = activeYear;
+        this.oriData = data;
         this.data = data[label];
         this.label = label;
 
-        let minValue = Infinity;
-        let maxValue = -Infinity;
-        for (let key of d3.keys(this.data)){
-            //console.log(key);
-            let karray = this.data[key];
 
-            for (let eachYear of karray.values){
-                let that = this;
-                let sRate = null;
-                if(that.label == "sUnem"){
-                    sRate = parseFloat(eachYear["Unemployment-rate"]);
-                }else {
-                    sRate = parseFloat(eachYear.rate);
-                }
-                minValue = sRate < minValue ? sRate : minValue;
-                maxValue = sRate > maxValue ? sRate : maxValue;
-            }
-        }
-
-        this.yScale = d3.scaleLinear()
-            .range([this.height,0])
-            .domain([0,maxValue])
-            .nice();
 
         this.xScale = d3.scaleBand()
             .range([0,this.width])
@@ -57,7 +36,7 @@ class BarPlot {
             let stateData = this.data[sID].values.find(d => d.Year == this.activeYear);
             //console.log(stateData);
             let sRate = null;
-            if(that.label == "sUnem"){
+            if(that.label == "unemployment"){
                 sRate = parseFloat(stateData["Unemployment-rate"]);
             }else {
                 sRate = parseFloat(stateData["rate"]);
@@ -96,14 +75,42 @@ class BarPlot {
                 return d.state;
             }));
 
-        let maxValue = -Infinity;
+        //let maxValue = -Infinity;
 
-        plotData.forEach(function (d) {
-            if(d.value > maxValue){
-                maxValue = d.value;
-            }});
+        //plotData.forEach(function (d) {
+           // if(d.value > maxValue){
+          //      maxValue = d.value;
+           // }});
         //console.log(maxValue);
-        let yScale = this.yScale;
+        //console.log(this.data);
+
+        let minValue = Infinity;
+        let maxValue = -Infinity;
+        for (let key of d3.keys(this.data)){
+            //console.log(key);
+            let karray = this.data[key];
+
+            for (let eachYear of karray.values){
+                let that = this;
+                let sRate = null;
+                if(that.label == "unemployment"){
+                    sRate = parseFloat(eachYear["Unemployment-rate"]);
+                }else {
+                    sRate = parseFloat(eachYear.rate);
+                }
+                minValue = sRate < minValue ? sRate : minValue;
+                maxValue = sRate > maxValue ? sRate : maxValue;
+            }
+        }
+
+        //console.log(minValue);
+        //console.log(maxValue)
+        let yScale = d3.scaleLinear()
+            .range([this.height,0])
+            .domain([0,maxValue])
+            .nice();
+
+        //let yScale = this.yScale;
             //.domain([0,maxValue])
             //.nice();
 
@@ -111,7 +118,7 @@ class BarPlot {
             .scale(xScale);
 
         let yAxis = d3.axisLeft()
-            .ticks(6)
+            .ticks(8)
             .tickSize(-this.width)
             .scale(yScale.nice());
 
@@ -293,7 +300,7 @@ class BarPlot {
             }));
         let xAxis = d3.axisBottom()
             .scale(xScale);
-        console.log(data);
+        //console.log(data);
         //console.log(d3.selectAll("rect"));
         d3.select("div#bar-plot").selectAll("rect").data(data, d=>d.state)
             .order()
@@ -319,7 +326,7 @@ class BarPlot {
             let stateID = that.data[sID].key;
             let stateData = that.data[sID].values.find(d => d.Year == this.activeYear);
             let sRate = null;
-            if(that.label == "sUnem"){
+            if(that.label == "unemployment"){
                 sRate = parseFloat(stateData["Unemployment-rate"]);
             }else {
                 sRate = parseFloat(stateData.rate);
@@ -328,5 +335,31 @@ class BarPlot {
         }
 
         that.updateBarPlot();
+    }
+
+    ChangeOverView(label){
+        let that = this;
+        this.activeData =[];
+        this.label =label;
+        this.data = this.oriData[label];
+
+        //console.log(that.activeYear);
+        for (let sID of d3.keys(this.data)){
+            let stateID = that.data[sID].key;
+            let stateData = that.data[sID].values.find(d => d.Year == that.activeYear);
+            let sRate = null;
+            if(that.label == "unemployment"){
+                sRate = parseFloat(stateData["Unemployment-rate"]);
+            }else {
+
+                sRate = parseFloat(stateData.rate);
+                //console.log(sRate);
+            }
+            this.activeData.push({"state":stateID,"value":sRate});
+        }
+       //console.log(this.activeData);
+
+        that.updateBarPlot();
+
     }
 }
