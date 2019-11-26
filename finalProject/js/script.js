@@ -17,10 +17,10 @@ loadData().then(mapData => {
             const lineChart = new Line(unemstate, crimerate)
             const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, updateOverview, lineChart, mapData, this.dataLabel)
 
-
-            //const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
-
             const bubbleChart = new bubblePlot(mapData, this.activeYear);
+            const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
+
+            //
             function updateState() {
                 if(that.activeState == undefined || that.activeState == null){
                     return null;
@@ -31,7 +31,7 @@ loadData().then(mapData => {
             function updateYear(year) {
                 this.activeYear = year;
 
-                //barChart.updateBarYear(year);
+                barChart.updateBarYear(year);
                 bubbleChart.updateYear(year);
 
             }

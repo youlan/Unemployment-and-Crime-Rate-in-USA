@@ -78,7 +78,7 @@ class Map{
                     .domain([2007, 2018])
                     .range([0, 520])
                     .nice()
-                console.log(d3.select("#lineChart").select("#yearline"))
+                //console.log(d3.select("#lineChart").select("#yearline"))
                 let yearline = d3.select("#lineChart").select("#yearline").attr("x1", x_scale(activeyear)).attr("x2", x_scale(activeyear))
                 //that.updateMap(activeyear);
                 //that.activeyear = activeyear

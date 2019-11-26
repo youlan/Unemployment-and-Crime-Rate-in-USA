@@ -16,7 +16,7 @@ class bubblePlot {
     constructor(data,activeyear){
 
 
-        this.margin = { top: 20, right: 20, bottom: 60, left: 80 };
+        this.margin = { top: 20, right: 20, bottom: 100, left: 80 };
         this.width = 900 - this.margin.left - this.margin.right;
         this.height = 600 - this.margin.top - this.margin.bottom;
 
@@ -157,9 +157,9 @@ class bubblePlot {
 
         this.svgGroup = d3.select('#chart-view').select('.plot-svg').append('g');
 
-        this.svgGroup.append("g").attr("id","x-axis");
+        this.svgGroup.append("g").attr("id","bx-axis");
         this.svgGroup.append("text").attr("id", "xaxis-label");
-        this.svgGroup.append("g").attr("id","y-axis");
+        this.svgGroup.append("g").attr("id","by-axis");
         this.svgGroup.append("text").attr("id", "yaxis-label");
 
         d3.select('#chart-view')
@@ -277,7 +277,7 @@ class bubblePlot {
 
         let xbAxis = d3.axisBottom()
             .scale(xbScale);
-        d3.select("#x-axis")
+        d3.select("#bx-axis")
             .classed("axis",true)
             .attr("transform", "translate("+this.margin.left+"," + (this.height+this.margin.top) + ")")
             .call(xbAxis);
@@ -292,7 +292,7 @@ class bubblePlot {
         let ybAxis = d3.axisLeft()
             .scale(ybScale);
 
-        d3.select("#y-axis")
+        d3.select("#by-axis")
             .attr("transform",
                 "translate("+this.margin.left+"," + this.margin.top  + ")")
             .call(ybAxis);

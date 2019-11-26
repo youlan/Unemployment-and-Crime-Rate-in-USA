@@ -131,7 +131,7 @@ class BarPlot {
 
 
         d3.select("#y-axis").append('g').attr("class","grid")
-            .attr("transform", "translate("+this.margin.left+"," + this.margin.top + ")")
+            .attr("transform", "translate("+that.margin.left+"," + that.margin.top + ")")
             .call(yAxis)
             .call(g => g.select(".domain").remove())
             .call(g => g.selectAll(".tick:not(:first-of-type) line")
@@ -146,7 +146,7 @@ class BarPlot {
 
         d3.select("#x-axis")
             .attr("class","axis")
-            .attr("transform", "translate("+this.margin.left+"," + (this.height+this.margin.top) + ")")
+            .attr("transform", "translate("+that.margin.left+"," + (that.height+that.margin.top) + ")")
             .call(xAxis)
             .call(g => g.select(".domain").remove())
             .selectAll("text")
