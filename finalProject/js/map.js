@@ -1,5 +1,5 @@
 class Map{
-    constructor(unemstate, crimerate, activeyear, updateyear, updatestate,updateOverview, lineChart){
+    constructor(unemstate, crimerate, activeyear, updateyear, updatestate,updateOverview, lineChart, otherdata){
         this.unemstate = unemstate;
         this.crimerate = crimerate;
         this.activeyear = activeyear;
@@ -10,8 +10,9 @@ class Map{
         this.drawMap();
         this.un_max = d3.max(this.unemstate,function(d){return parseFloat(d["Unemployment-rate"])})
         this.un_min = d3.min(this.unemstate,function(d){return parseFloat(d["Unemployment-rate"])})
-        this.currview = 1
+        this.currview = 1;
         this.updateOverview = updateOverview;
+        this.otherdata = otherdata;
     }
 
     drawYearSlider() {
@@ -228,7 +229,11 @@ class Map{
                     }
                 }
             }
-
+            d3.select("#mapChart")
+              .append("div")
+              .classed("tooltip", true)
+              .style("opacity", 0);
+            let tooltip = d3.select(".tooltip");
             //console.log(test)
             g_area.append("g")
                   .attr("id", "counties")
@@ -289,7 +294,15 @@ class Map{
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
                                         d3.select("div#lineChart").selectAll("#linename").text(d.properties.name)
-                                    })
+                                        tooltip.transition()
+                                               .duration(200)
+                                               .style("opacity", 0.9);
+                                        tooltip
+                                               .html(that.tooltipRender(d) + "<br/>")
+                                                // .html("ssss" + "<br/>")
+                                               .style("left", d3.event.pageX + 10 + "px")
+                                               .style("top", d3.event.pageY + "px");
+                                    })  
                   .on("mouseleave", function (d) {
                                         let state = "#"+this.id
                                         d3.select(".bars").selectAll(state).style("opacity",1)
@@ -297,13 +310,48 @@ class Map{
                                         //d3.select(this).style("opacity",1);
                                         d3.select(".bars").selectAll('#limit').remove()
                                         d3.select("div#lineChart").selectAll("#linename").text("")
+                                        tooltip.transition()
+                                               .duration(500)
+                                               .style("opacity", 0);
                                     });
 
             g_area.append("path")
                   .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
                   .attr("id", "state-borders")
                   .attr("d", mappath)
-                  .attr("fill", "black")
+                  //.attr("fill", "black")
+            g_area.append("rect")
+                  .attr("x",800)
+                  .attr("y",300)
+                  .attr("height",15)
+                  .attr("width",10)
+                  .attr("id","legend1")
+                  .attr("class","legend")
+                  .attr("fill", d3.interpolateBlues(unemColorScale(13)))
+            g_area.append("rect")
+                  .attr("x",800)
+                  .attr("y",315)
+                  .attr("height",15)
+                  .attr("width",10)
+                  .attr("id","legend2")
+                  .attr("class","legend")
+                  .attr("fill", d3.interpolateBlues(unemColorScale(9)))
+            g_area.append("rect")
+                  .attr("x",800)
+                  .attr("y",330)
+                  .attr("height",15)
+                  .attr("width",10)
+                  .attr("id","legend3")
+                  .attr("class","legend")
+                  .attr("fill", d3.interpolateBlues(unemColorScale(5)))
+            g_area.append("rect")
+                  .attr("x",800)
+                  .attr("y",345)
+                  .attr("height",15)
+                  .attr("width",10)
+                  .attr("id","legend4")
+                  .attr("class","legend")
+                  .attr("fill", d3.interpolateBlues(unemColorScale(1)))
         }
         function clicked(d) {
             if (d3.select('.background').node() === this) return reset();
@@ -340,7 +388,23 @@ class Map{
         }
 
 
+        
     }
+    tooltipRender(data) {
+          let text = "<h2>" + "State: " + data.properties.name + "</h2>";
+          let other = this.otherdata.filter(d=>{
+            return (parseInt(d.Year) == this.activeyear && d.State == data.properties.name);
+          })
+          let crime = this.crimerate.filter(d=>{
+            return (parseInt(d.Year) == this.activeyear && d.State == data.properties.name);  
+          })
+          console.log(crime)
+          text += "<h2>" + "Unemployment Rate: " + other[0]["Unemployment-rate"] + "%<h2>";
+          text += "<h2>" + "Crime Rate: " + (crime[0]["rate"]/100).toFixed(2) + "‰<h2>";
+          text += "<h2>" + "Income: " + other[0]["Income"] + "<h2>";
+          text += "<h2>" + "Population: " + other[0]["Population"] + "<h2>";
+          return text;
+        }
 
 }
 
