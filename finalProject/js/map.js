@@ -185,6 +185,7 @@ class Map{
                 that.updateOverview("crime");
             }
             if(d == 3){
+                console.log("here")
                 that.updateOverview("overview");
             }
 
@@ -204,13 +205,6 @@ class Map{
                                       }
                                   }
                               })  
-          if (that.currview == 1){
-            
-          } 
-          if(that.currview == 2){
-            
-          }
-
           //console.log(this.currview)
         })
         function ready(us) {
@@ -294,21 +288,22 @@ class Map{
                                })
                   
                   .on('mouseenter', function (d) {
-
                                         let state = "#"+this.id;
-                                        let staterect = d3.select("div#bar-plot").selectAll(state);
-                                        staterect.style("opacity",0.5);
-                                        const y = staterect.attr("y");
-                                        var line = d3.select(".bars")
-                                                     .append("line")
-                                                     .attr('id', 'limit')
-                                                     .attr('x1', 0)
-                                                     .attr('y1', y)
-                                                     .attr('x2', 1300)
-                                                     .attr('y2', y)
-                                                     .attr("stroke","red")
-                                                     .attr("stroke-width","3px")
-                                                     .attr("stroke-dasharray", "3 6");
+                                        if(that.currview != 3){
+                                          let staterect = d3.select("div#bar-plot").selectAll(state);
+                                          staterect.style("opacity",0.5);
+                                          const y = staterect.attr("y");
+                                          var line = d3.select(".bars")
+                                                       .append("line")
+                                                       .attr('id', 'limit')
+                                                       .attr('x1', 0)
+                                                       .attr('y1', y)
+                                                       .attr('x2', 1300)
+                                                       .attr('y2', y)
+                                                       .attr("stroke","red")
+                                                       .attr("stroke-width","3px")
+                                                       .attr("stroke-dasharray", "3 6");
+                                        }
                                         d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
@@ -424,7 +419,7 @@ class Map{
           let crime = this.crimerate.filter(d=>{
             return (parseInt(d.Year) == this.activeyear && d.State == data.properties.name);  
           })
-          console.log(crime)
+          //console.log(crime)
           text += "<h2>" + "Unemployment Rate: " + other[0]["Unemployment-rate"] + "%<h2>";
           text += "<h2>" + "Crime Rate: " + (crime[0]["rate"]/100).toFixed(2) + "‰<h2>";
           text += "<h2>" + "Income: " + other[0]["Income"] + "<h2>";

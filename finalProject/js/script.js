@@ -6,7 +6,6 @@ loadData().then(mapData => {
     let that = this;
     this.dataLabel = "unemployment";
 
-
     const bubbleChart = new bubblePlot(mapData, this.activeYear);
     document.getElementById("bubbleChart").style.display = "none";
     const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
@@ -15,12 +14,14 @@ loadData().then(mapData => {
 
         this.dataLabel = label;
         if (label === "unemployment" || label === "crime"){
+            //console.log("here")
             document.getElementById("bubbleChart").style.display = "none";
             document.getElementById("barChart").style.display = "block";
 
             barChart.ChangeOverView(label);
         }
         if(label === "overview"){
+            //console.log("here")
             document.getElementById("barChart").style.display = "none";
             document.getElementById("bubbleChart").style.display = "block";
         }
