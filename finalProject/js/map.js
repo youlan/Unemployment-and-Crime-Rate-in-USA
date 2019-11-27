@@ -152,6 +152,11 @@ class Map{
             that.currview = d
             //console.log(d)
             //console.log(that.lineChart)
+            let cr_max = d3.max(that.crimerate,function(d){return parseFloat(d["rate"])})
+            let cr_min = d3.min(that.crimerate,function(d){return parseFloat(d["rate"])})
+            let crColorScale = d3.scaleLinear()
+                           .domain([cr_min,cr_max])
+                           .range([0,1]);
             if(d == 1){
                 that.lineChart.drawupdate(that.unemstate, "unemployment")
                 //d3.select("#bar-plot").select("svg").remove();
@@ -160,6 +165,11 @@ class Map{
                 //console.log(that.mapData, that.activeYear)
                 //const barChart = new BarPlot(that.mapData, that.activeyear, "sUnem")
                 that.updateOverview("unemployment");
+                d3.select("#legend1").attr("fill", d3.interpolateBlues(unemColorScale(13.5)))
+                d3.select("#legend2").attr("fill", d3.interpolateBlues(unemColorScale(10.5)))
+                d3.select("#legend3").attr("fill", d3.interpolateBlues(unemColorScale(7.5)))
+                d3.select("#legend4").attr("fill", d3.interpolateBlues(unemColorScale(4.5)))
+                d3.select("#legend5").attr("fill", d3.interpolateBlues(unemColorScale(1.5)))
             }
             if(d == 2){
                 that.lineChart.drawupdate(that.crimerate, "crime")
@@ -167,6 +177,11 @@ class Map{
                 //d3.select("#sorting-button").select("g").remove();
                 //console.log(that.mapData, that.activeYear)
                 //const barChart = new BarPlot(that.mapData, that.activeyear, "sCrime")
+                d3.select("#legend1").attr("fill", d3.interpolateReds(crColorScale(900)))
+                d3.select("#legend2").attr("fill", d3.interpolateReds(crColorScale(700)))
+                d3.select("#legend3").attr("fill", d3.interpolateReds(crColorScale(500)))
+                d3.select("#legend4").attr("fill", d3.interpolateReds(crColorScale(300)))
+                d3.select("#legend5").attr("fill", d3.interpolateReds(crColorScale(100)))
                 that.updateOverview("crime");
             }
             if(d == 3){
@@ -174,11 +189,7 @@ class Map{
             }
 
           let statearea = d3.select("#mapChart").select("#states").selectAll("path")
-          let cr_max = d3.max(that.crimerate,function(d){return parseFloat(d["rate"])})
-          let cr_min = d3.min(that.crimerate,function(d){return parseFloat(d["rate"])})
-          let crColorScale = d3.scaleLinear()
-                         .domain([cr_min,cr_max])
-                         .range([0,1]);
+          
           statearea.attr("fill",function(d){
                                   if(that.currview == 1){
                                       if(d.unemployment_data != undefined){
@@ -192,7 +203,14 @@ class Map{
                                           return(d3.interpolateReds(crColorScale(d.crimerate[that.activeyear-2007].crimerate)))
                                       }
                                   }
-                              })     
+                              })  
+          if (that.currview == 1){
+            
+          } 
+          if(that.currview == 2){
+            
+          }
+
           //console.log(this.currview)
         })
         function ready(us) {
@@ -236,20 +254,20 @@ class Map{
               .style("opacity", 0);
             let tooltip = d3.select(".tooltip");
             //console.log(test)
-            g_area.append("g")
-                  .attr("id", "counties")
-                  .selectAll("path")
-                  .data(topojson.feature(us, us.objects.counties).features)
-                  .enter()
-                  .append("path")
-                  .attr("d", mappath)
-                  .attr("class", "county-boundary")
-                  .attr("id", function(d){
-                                  let id = (d.id-d.id%1000)/1000
-                                  let name =  topojson.feature(us, us.objects.states).features.filter(d=>d.id == id)
-                                  return(name[0].properties.name+d.properties.name)
-                              })
-                  .on("click",reset);
+            // g_area.append("g")
+            //       .attr("id", "counties")
+            //       .selectAll("path")
+            //       .data(topojson.feature(us, us.objects.counties).features)
+            //       .enter()
+            //       .append("path")
+            //       .attr("d", mappath)
+            //       .attr("class", "county-boundary")
+            //       .attr("id", function(d){
+            //                       let id = (d.id-d.id%1000)/1000
+            //                       let name =  topojson.feature(us, us.objects.states).features.filter(d=>d.id == id)
+            //                       return(name[0].properties.name+d.properties.name)
+            //                   })
+            //       .on("click",reset);
             g_area.append("g")
                   .attr("id", "states")
                   .selectAll("path")
@@ -274,7 +292,7 @@ class Map{
                                       return(d3.interpolateBlues(unemColorScale(d.unemployment_data[0].unemployment_rate)))
                                   }  
                                })
-                  .on("click",clicked)
+                  
                   .on('mouseenter', function (d) {
 
                                         let state = "#"+this.id;
@@ -313,9 +331,8 @@ class Map{
                                         //d3.select(this).style("opacity",1);
                                         d3.select(".bars").selectAll('#limit').remove()
                                         d3.select("div#lineChart").selectAll("#linename").text("")
-                                        tooltip.transition()
-                                               .duration(500)
-                                               .style("opacity", 0);
+                                        tooltip.style("opacity", 0);
+                                        tooltip.selectAll("h2").remove()
                                     });
 
             g_area.append("path")
@@ -330,7 +347,7 @@ class Map{
                   .attr("width",10)
                   .attr("id","legend1")
                   .attr("class","legend")
-                  .attr("fill", d3.interpolateBlues(unemColorScale(13)))
+                  .attr("fill", d3.interpolateBlues(unemColorScale(13.5)))
             g_area.append("rect")
                   .attr("x",800)
                   .attr("y",315)
@@ -338,7 +355,7 @@ class Map{
                   .attr("width",10)
                   .attr("id","legend2")
                   .attr("class","legend")
-                  .attr("fill", d3.interpolateBlues(unemColorScale(9)))
+                  .attr("fill", d3.interpolateBlues(unemColorScale(10.5)))
             g_area.append("rect")
                   .attr("x",800)
                   .attr("y",330)
@@ -346,7 +363,7 @@ class Map{
                   .attr("width",10)
                   .attr("id","legend3")
                   .attr("class","legend")
-                  .attr("fill", d3.interpolateBlues(unemColorScale(5)))
+                  .attr("fill", d3.interpolateBlues(unemColorScale(7.5)))
             g_area.append("rect")
                   .attr("x",800)
                   .attr("y",345)
@@ -354,7 +371,15 @@ class Map{
                   .attr("width",10)
                   .attr("id","legend4")
                   .attr("class","legend")
-                  .attr("fill", d3.interpolateBlues(unemColorScale(1)))
+                  .attr("fill", d3.interpolateBlues(unemColorScale(4.5)))
+            g_area.append("rect")
+                  .attr("x",800)
+                  .attr("y",360)
+                  .attr("height",15)
+                  .attr("width",10)
+                  .attr("id","legend5")
+                  .attr("class","legend")
+                  .attr("fill", d3.interpolateBlues(unemColorScale(1.5)))
         }
         function clicked(d) {
             if (d3.select('.background').node() === this) return reset();
