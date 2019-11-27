@@ -289,6 +289,7 @@ class Map{
                   
                   .on('mouseenter', function (d) {
                                         let state = "#"+this.id;
+
                                         if(that.currview != 3){
                                           let staterect = d3.select("div#bar-plot").selectAll(state);
                                           staterect.style("opacity",0.5);
@@ -304,6 +305,21 @@ class Map{
                                                        .attr("stroke-width","3px")
                                                        .attr("stroke-dasharray", "3 6");
                                         }
+
+                                        let staterect = d3.select("div#bar-plot").selectAll(state);
+                                        //staterect.style("opacity",0.5);
+                                        staterect.classed("selected",true)
+                                        const y = staterect.attr("y");
+                                        var line = d3.select(".bars")
+                                                     .append("line")
+                                                     .attr('id', 'limit')
+                                                     .attr('x1', 0)
+                                                     .attr('y1', y)
+                                                     .attr('x2', 1300)
+                                                     .attr('y2', y)
+                                                     .attr("stroke","red")
+                                                     .attr("stroke-width","3px")
+                                                     .attr("stroke-dasharray", "3 6");
                                         d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
@@ -319,7 +335,8 @@ class Map{
                                     })  
                   .on("mouseleave", function (d) {
                                         let state = "#"+this.id
-                                        d3.select(".bars").selectAll(state).style("opacity",1)
+                                        //d3.select(".bars").selectAll(state).style("opacity",1)
+                                        d3.select(".bars").selectAll(state).classed("selected",false);
                                         d3.select("div#lineChart").selectAll(state).classed("selectedPath",false)
                                         //d3.select(this).style("opacity",1);
                                         d3.select(".bars").selectAll('#limit').remove()

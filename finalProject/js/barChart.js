@@ -75,15 +75,6 @@ class BarPlot {
                 return d.state;
             }));
 
-        //let maxValue = -Infinity;
-
-        //plotData.forEach(function (d) {
-           // if(d.value > maxValue){
-          //      maxValue = d.value;
-           // }});
-        //console.log(maxValue);
-        //console.log(this.data);
-
 
         let minValue = Infinity;
         let maxValue = -Infinity;
@@ -104,8 +95,7 @@ class BarPlot {
             }
         }
 
-        //console.log(minValue);
-        //console.log(maxValue)
+
         let yScale = d3.scaleLinear()
             .range([this.height,0])
             .domain([0,maxValue])
@@ -115,9 +105,7 @@ class BarPlot {
                             "crime":d3.interpolateReds}
 
         let colorScale = d3.scaleSequential(colorSelect[that.label]).domain([0,maxValue])
-        //let yScale = this.yScale;
-            //.domain([0,maxValue])
-            //.nice();
+
 
         let xAxis = d3.axisBottom()
             .scale(xScale);
@@ -127,10 +115,7 @@ class BarPlot {
             .tickSize(-this.width)
             .scale(yScale.nice());
 
-        //d3.select("#y-axis")
-        //    .attr("transform", "translate("+this.margin.left+"," + this.margin.top + ")")
-        //    .call(yAxis)
-        //    .call(g => g.select(".domain").remove());
+
         d3.select("#y-axis").selectAll(".grid").remove();
         d3.select("#x-axis").selectAll(".axis").remove();
 
@@ -188,12 +173,13 @@ class BarPlot {
             .attr("height",function (d) {
                 return that.height - yScale(d.value);
             })
-            .style("fill", d=>colorScale(d.value))
+            .attr("fill", d=>colorScale(d.value))
             .style("opacity",1)
             .on('mouseenter', function (actual, i) {
                 //console.log(d)
-                d3.select(this).style("opacity",0.5)
-                const y = yScale(actual.value)
+                //d3.select(this).style("opacity",0.5)
+                d3.select(this).classed("selected",true);
+                const y = yScale(actual.value);
                 //console.log(y)
                 var line = d3.select(".bars").append("line")
                     .attr('id', 'limit')
@@ -212,7 +198,8 @@ class BarPlot {
                 //d3.selectAll("path").select(state).attr("fill","orange")
             })
             .on("mouseleave", function (actual,i) {
-                d3.select(this).style("opacity",1);
+                //d3.select(this).style("opacity",1);
+                d3.select(this).classed("selected",false);
                 d3.select(".bars").selectAll('#limit').remove()
                 let state = "#"+this.id
                 d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
