@@ -20,18 +20,13 @@
     pointer-events: none;
 }
 
-.county-boundary {
-    fill: #aaa;
-    stroke: #fff;
-    stroke-width: .5px;
-}
 
-.county-boundary:hover, .state:hover {
+.state:hover {
     fill: orange;
 }
 
-.bar{
-    fill: steelblue;
+.bars:hover {
+    fill: orange;
 }
 .selected{
     fill: orange;

@@ -279,7 +279,8 @@ class Map{
 
                                         let state = "#"+this.id;
                                         let staterect = d3.select("div#bar-plot").selectAll(state);
-                                        staterect.style("opacity",0.5);
+                                        //staterect.style("opacity",0.5);
+                                        staterect.classed("selected",true)
                                         const y = staterect.attr("y");
                                         var line = d3.select(".bars")
                                                      .append("line")
@@ -306,7 +307,8 @@ class Map{
                                     })  
                   .on("mouseleave", function (d) {
                                         let state = "#"+this.id
-                                        d3.select(".bars").selectAll(state).style("opacity",1)
+                                        //d3.select(".bars").selectAll(state).style("opacity",1)
+                                        d3.select(".bars").selectAll(state).classed("selected",false);
                                         d3.select("div#lineChart").selectAll(state).classed("selectedPath",false)
                                         //d3.select(this).style("opacity",1);
                                         d3.select(".bars").selectAll('#limit').remove()

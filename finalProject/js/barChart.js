@@ -188,12 +188,13 @@ class BarPlot {
             .attr("height",function (d) {
                 return that.height - yScale(d.value);
             })
-            .style("fill", d=>colorScale(d.value))
+            .attr("fill", d=>colorScale(d.value))
             .style("opacity",1)
             .on('mouseenter', function (actual, i) {
                 //console.log(d)
-                d3.select(this).style("opacity",0.5)
-                const y = yScale(actual.value)
+                //d3.select(this).style("opacity",0.5)
+                d3.select(this).classed("selected",true);
+                const y = yScale(actual.value);
                 //console.log(y)
                 var line = d3.select(".bars").append("line")
                     .attr('id', 'limit')
@@ -212,7 +213,8 @@ class BarPlot {
                 //d3.selectAll("path").select(state).attr("fill","orange")
             })
             .on("mouseleave", function (actual,i) {
-                d3.select(this).style("opacity",1);
+                //d3.select(this).style("opacity",1);
+                d3.select(this).classed("selected",false);
                 d3.select(".bars").selectAll('#limit').remove()
                 let state = "#"+this.id
                 d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
