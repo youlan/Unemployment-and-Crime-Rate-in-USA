@@ -36,6 +36,13 @@ class bubblePlot {
             'unemployment': -Infinity,
             'crime': -Infinity
         };
+
+        this.colorSelect = {
+            "unemployment": d3.interpolateBlues,
+            "crime": d3.interpolateReds,
+            "population": d3.interpolatePurples,
+            "income": d3.interpolateGreens
+        };
         //console.log(this.data);
         for (let key of d3.keys(this.data)){
             let karray = this.data[key];
@@ -252,7 +259,7 @@ class bubblePlot {
             .domain([this.minSize[yIndicator], this.maxSize[yIndicator]]).nice();
 
 
-        let colorScale = d3.scaleSequential(d3.interpolatePRGn)
+        let colorScale = d3.scaleSequential(this.colorSelect[circleColorIndicator])
             .domain([this.minSize[circleColorIndicator], this.maxSize[circleColorIndicator]]);
 
         //import {legend} from "@d3/color-legend";

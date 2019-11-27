@@ -84,6 +84,7 @@ class BarPlot {
         //console.log(maxValue);
         //console.log(this.data);
 
+
         let minValue = Infinity;
         let maxValue = -Infinity;
         for (let key of d3.keys(this.data)){
@@ -110,6 +111,10 @@ class BarPlot {
             .domain([0,maxValue])
             .nice();
 
+        let colorSelect = {"unemployment": d3.interpolateBlues,
+                            "crime":d3.interpolateReds}
+
+        let colorScale = d3.scaleSequential(colorSelect[that.label]).domain([0,maxValue])
         //let yScale = this.yScale;
             //.domain([0,maxValue])
             //.nice();
@@ -183,7 +188,7 @@ class BarPlot {
             .attr("height",function (d) {
                 return that.height - yScale(d.value);
             })
-            .style("fill", "teal")
+            .style("fill", d=>colorScale(d.value))
             .style("opacity",1)
             .on('mouseenter', function (actual, i) {
                 //console.log(d)
