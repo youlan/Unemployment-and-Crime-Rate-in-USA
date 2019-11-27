@@ -19,9 +19,9 @@ loadData().then(mapData => {
                 const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, updateOverview, lineChart, otherdata)
 
 
-                const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
+                //const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
 
-                //const bubbleChart = new bubblePlot(mapData, this.activeYear);
+                const bubbleChart = new bubblePlot(mapData, this.activeYear);
                 function updateState() {
                     if(that.activeState == undefined || that.activeState == null){
                         return null;
@@ -32,8 +32,8 @@ loadData().then(mapData => {
                 function updateYear(year) {
                     this.activeYear = year;
 
-                    barChart.updateBarYear(year);
-                    //bubbleChart.updateYear(year);
+                    //barChart.updateBarYear(year);
+                    bubbleChart.updateYear(year);
 
                 }
 
