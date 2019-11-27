@@ -75,15 +75,6 @@ class BarPlot {
                 return d.state;
             }));
 
-        //let maxValue = -Infinity;
-
-        //plotData.forEach(function (d) {
-           // if(d.value > maxValue){
-          //      maxValue = d.value;
-           // }});
-        //console.log(maxValue);
-        //console.log(this.data);
-
 
         let minValue = Infinity;
         let maxValue = -Infinity;
@@ -104,8 +95,7 @@ class BarPlot {
             }
         }
 
-        //console.log(minValue);
-        //console.log(maxValue)
+
         let yScale = d3.scaleLinear()
             .range([this.height,0])
             .domain([0,maxValue])
@@ -115,9 +105,7 @@ class BarPlot {
                             "crime":d3.interpolateReds}
 
         let colorScale = d3.scaleSequential(colorSelect[that.label]).domain([0,maxValue])
-        //let yScale = this.yScale;
-            //.domain([0,maxValue])
-            //.nice();
+
 
         let xAxis = d3.axisBottom()
             .scale(xScale);
@@ -127,10 +115,7 @@ class BarPlot {
             .tickSize(-this.width)
             .scale(yScale.nice());
 
-        //d3.select("#y-axis")
-        //    .attr("transform", "translate("+this.margin.left+"," + this.margin.top + ")")
-        //    .call(yAxis)
-        //    .call(g => g.select(".domain").remove());
+
         d3.select("#y-axis").selectAll(".grid").remove();
         d3.select("#x-axis").selectAll(".axis").remove();
 
