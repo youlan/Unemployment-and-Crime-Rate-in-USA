@@ -18,6 +18,7 @@ loadData().then(mapData => {
             const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, updateOverview, lineChart, mapData, this.dataLabel)
 
             const bubbleChart = new bubblePlot(mapData, this.activeYear);
+            document.getElementById("bubbleChart").style.display = "none";
             const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
 
             //
@@ -39,7 +40,18 @@ loadData().then(mapData => {
             function updateOverview(label) {
                 //console.log(label);
                 this.dataLabel = label;
-                barChart.ChangeOverView(label);
+                if (label === "unemployment" || label === "crime"){
+                    document.getElementById("bubbleChart").style.display = "none";
+                    document.getElementById("barChart").style.display = "block";
+
+                    barChart.ChangeOverView(label);
+                }
+                if(label === "overview"){
+                    document.getElementById("barChart").style.display = "none";
+                    document.getElementById("bubbleChart").style.display = "block";
+
+                }
+
             }
 
 

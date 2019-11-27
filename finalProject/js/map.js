@@ -169,6 +169,7 @@ class Map{
                 that.updateOverview("crime");
             }
             if(d == 3){
+                that.updateOverview("overview");
             }
 
           let statearea = d3.select("#mapChart").select("#states").selectAll("path")
