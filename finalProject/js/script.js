@@ -7,55 +7,50 @@ loadData().then(mapData => {
     this.dataLabel = "unemployment";
 
 
-    //
+    const bubbleChart = new bubblePlot(mapData, this.activeYear);
+    document.getElementById("bubbleChart").style.display = "none";
+    const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
+
+    function updateOverview(label){
+
+        this.dataLabel = label;
+        if (label === "unemployment" || label === "crime"){
+            document.getElementById("bubbleChart").style.display = "none";
+            document.getElementById("barChart").style.display = "block";
+
+            barChart.ChangeOverView(label);
+        }
+        if(label === "overview"){
+            document.getElementById("barChart").style.display = "none";
+            document.getElementById("bubbleChart").style.display = "block";
+        }
+    }
+
+    function updateYear(year) {
+        this.activeYear = year;
+
+        barChart.updateBarYear(year);
+        bubbleChart.updateYear(year);
+    }
 
 
-    //console.log(mapData);
     d3.csv("data/unemployment_state.csv").then(unemstate=>{
         d3.csv("data/crimerate.csv").then(crimerate=>{
+            d3.csv("data/metadata.csv").then(otherdata=>{
 
-            const lineChart = new Line(unemstate, crimerate)
-            const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, updateOverview, lineChart, mapData, this.dataLabel)
+                const lineChart = new Line(unemstate, crimerate)
+                const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, updateOverview, lineChart, otherdata)
 
-            const bubbleChart = new bubblePlot(mapData, this.activeYear);
-            document.getElementById("bubbleChart").style.display = "none";
-            const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
 
             //
-            function updateState() {
-                if(that.activeState == undefined || that.activeState == null){
-                    return null;
-                }
-    
-            }
-
-            function updateYear(year) {
-                this.activeYear = year;
-
-                barChart.updateBarYear(year);
-                bubbleChart.updateYear(year);
-
-            }
-
-            function updateOverview(label) {
-                //console.log(label);
-                this.dataLabel = label;
-                if (label === "unemployment" || label === "crime"){
-                    document.getElementById("bubbleChart").style.display = "none";
-                    document.getElementById("barChart").style.display = "block";
-
-                    barChart.ChangeOverView(label);
-                }
-                if(label === "overview"){
-                    document.getElementById("barChart").style.display = "none";
-                    document.getElementById("bubbleChart").style.display = "block";
-
+                function updateState() {
+                    if (that.activeState == undefined || that.activeState == null) {
+                        return null;
+                    }
                 }
 
-            }
+            })
 
-
-            //console.log(data);
         });
     });
 });
