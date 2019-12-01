@@ -107,7 +107,7 @@ class Map{
             left:0,
             right:0
         };
-        console.log(this.activeyear);
+        
         //let width = (parseInt(d3.select("div#mapChart").style("width")) - margin.left - margin.right);
         let width = 900;
         let mapRatio = 0.5;
@@ -242,6 +242,7 @@ class Map{
           //console.log(this.currview)
         })
         function ready(us) {
+            
             //console.log(topojson.feature(us, us.objects.counties).features.filter(d=>(d.id-d.id%1000)/1000 ==55))
             //console.log(topojson.feature(us, us.objects.states).features.filter(d=>d.id == 55))
             let test = topojson.feature(us, us.objects.states).features;
@@ -339,7 +340,7 @@ class Map{
                                                        .attr("stroke-width","3px")
                                                        .attr("stroke-dasharray", "3 6");
                                         }
-
+                                        let year = that.activeyear;
                                         let staterect = d3.select("div#bar-plot").selectAll(state);
                                         //staterect.style("opacity",0.5);
                                         staterect.classed("selected",true)
@@ -357,8 +358,24 @@ class Map{
                                         d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
+                                        let x_scale = d3.scaleLinear()
+                                                        .domain([2007,2018])
+                                                        .range([0,600])
+                                                        .nice()
+                                        let y_scale = d3.scaleLinear()
+                                                        .domain([15,0])
+                                                        .range([0,500])
+                                                        .nice()
                                         d3.select("div#lineChart").selectAll("#linename").text(d.properties.name)
                                         d3.select("div#bubbleChart").selectAll(state).classed("selectedBubble",true)
+                                        d3.select("div#lineChart")
+                                          .append("circle")
+                                          .attr("cx",x_scale(year))
+                                          .attr("cy",function(d){return 10})
+                                          .attr("r",3)
+                                          .attr("fill","none")
+                                          .attr("stroke","black")
+                                          .attr("id","poscircle")
                                         tooltip.transition()
                                                .duration(200)
                                                .style("opacity", 0.9);
@@ -379,6 +396,7 @@ class Map{
                                         d3.select("div#bubbleChart").selectAll(state).classed("selectedBubble",false)
                                         let tooltip = d3.select(".tooltip");
                                         tooltip.remove()
+                                        //d3.selectAll("#poscircle").remove();
                                     });
 
             g_area.append("path")
