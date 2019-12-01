@@ -251,7 +251,7 @@ class Map{
                 for (let j=0; j<test.length; j++){
                      //console.log(test[j].properties.name,this.unemstate[i].State)
                     if(test[j].properties.name.replace(/[ ]/g,"") === unemstate[i].State.replace(/[ ]/g,"")){
-                        for (let k = 12; k<crimerate.length; k=k+12){
+                        for (let k = 0; k<crimerate.length; k=k+12){
                             //console.log(crimerate[k].State)
                             if(test[j].properties.name.replace(/[ ]/g,"") === crimerate[k].State.replace(/[ ]/g,"")){
                                 let data_un = [];
