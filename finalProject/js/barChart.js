@@ -205,6 +205,40 @@ class BarPlot {
                 d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",true)
                 d3.select("#lineChart").selectAll(state).classed("selectedPath",true)
                 d3.select("div#lineChart").selectAll("#linename").text(actual.state)
+                let x_scale = d3.scaleLinear()
+                                .domain([2007,2018])
+                                .range([0,600])
+                                .nice()
+                let y_scale_um = d3.scaleLinear()
+                                   .domain([15,0])
+                                   .range([0,500])
+                                   .nice()
+                let y_scale_cr = d3.scaleLinear()
+                                   .domain([1000,0])
+                                   .range([0,500])
+                                   .nice()
+                
+                
+                d3.select("div#lineChart")
+                  .select("svg")
+                  .append("circle")
+                  .attr("cx",x_scale(activeYear))
+                  .attr("cy",function(){
+                    console.log(actual.value)
+                        if (that.label == "unemployment"){
+                            return y_scale_um(actual.value)
+                        }
+                        else{
+                            return y_scale_cr(actual.value)
+                        }
+                    })
+                  .attr("r",5)
+                  .attr("fill","white")
+                  .attr("stroke","red")
+                  .attr("strokeStyle","red")
+                  .attr("stroke-width",3)
+                  .attr("transform","translate(40,30)")
+                  .attr("id","poscircle")
                 //console.log(d3.selectAll("path").select(state))
                 //d3.selectAll("path").select(state).attr("fill","orange")
             })
@@ -216,6 +250,7 @@ class BarPlot {
                 d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
                 d3.select("#lineChart").selectAll(state).classed("selectedPath",false)
                 d3.select("div#lineChart").selectAll("#linename").text("")
+                d3.selectAll("#poscircle").remove();
             });
         
         //console.log(this.xScale);

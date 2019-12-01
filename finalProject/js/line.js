@@ -3,7 +3,7 @@ class Line{
 		this.unemstate = unemstate;
         this.crimerate = crimerate;
 		//this.drawInit();
-		this.drawupdate(unemstate,"unemployment");
+		this.drawupdate(unemstate,"unemployment",2007);
 	}
 	drawInit(){
         let that = this
@@ -37,7 +37,7 @@ class Line{
         // })
 
 	}
-	drawupdate(activedata,type){
+	drawupdate(activedata,type,activeyear){
 		let that = this
         d3.select("div#lineChart").select("svg").remove();
         // let oldaxis = linesvg.selectAll(".axisy").remove()
@@ -129,9 +129,9 @@ class Line{
                    .attr("transform","translate(40,30)")
                    .classed("linespace", true)
             linesvg.append("line")
-                   .attr("x1",x_scale(2007))
+                   .attr("x1",x_scale(activeyear))
                    .attr("y1",0)
-                   .attr("x2",x_scale(2007))
+                   .attr("x2",x_scale(activeyear))
                    .attr("y2",500)
                    .attr("transform","translate(40,30)")
                    .attr("stroke","red")
@@ -257,9 +257,9 @@ class Line{
                    .attr("transform","translate(40,30)")
                    .classed("linespace", true)
             linesvg.append("line")
-                   .attr("x1",x_scale(2007))
+                   .attr("x1",x_scale(activeyear))
                    .attr("y1",0)
-                   .attr("x2",x_scale(2007))
+                   .attr("x2",x_scale(activeyear))
                    .attr("y2",500)
                    .attr("transform","translate(40,30)")
                    .attr("stroke","red")

@@ -159,7 +159,7 @@ class Map{
                            .domain([cr_min,cr_max])
                            .range([0,1]);
             if(d == 1){
-                that.lineChart.drawupdate(that.unemstate, "unemployment")
+                that.lineChart.drawupdate(that.unemstate, "unemployment", that.activeyear)
                 //d3.select("#bar-plot").select("svg").remove();
                 //console.log(d3.select("#sorting-button").select("g"))
                 //d3.select("#sorting-button").select("g").remove();
@@ -180,7 +180,7 @@ class Map{
                 d3.select("#legendname").text("unemployment rate(%)")
             }
             if(d == 2){
-                that.lineChart.drawupdate(that.crimerate, "crime")
+                that.lineChart.drawupdate(that.crimerate, "crime", that.activeyear)
                 //d3.select("#bar-plot").select("svg").remove();
                 //d3.select("#sorting-button").select("g").remove();
                 //console.log(that.mapData, that.activeYear)
@@ -200,7 +200,7 @@ class Map{
                 that.updateOverview("crime");
             }
             if(d == 3){
-                that.lineChart.drawupdate(that.unemstate, "unemployment")
+                that.lineChart.drawupdate(that.unemstate, "unemployment", that.activeyear)
                 d3.select("#legend1").attr("fill", d3.interpolateBlues(unemColorScale(13.5)))
                 d3.select("#legend2").attr("fill", d3.interpolateBlues(unemColorScale(10.5)))
                 d3.select("#legend3").attr("fill", d3.interpolateBlues(unemColorScale(7.5)))
@@ -319,6 +319,7 @@ class Map{
                                })
                   
                   .on('mouseenter', function (d) {
+                                        //console.log(d)
                                         let state = "#"+this.id;
                                         d3.select("#mapChart")
                                           .append("div")
@@ -384,11 +385,11 @@ class Map{
                                                 return y_scale_cr(d["crimerate"][year-2007]["crimerate"])
                                             }
                                         })
-                                          .attr("r",3)
-                                          .attr("fill","none")
-                                          .attr("stroke","black")
+                                          .attr("r",5)
+                                          .attr("fill","white")
+                                          .attr("stroke","red")
                                           .attr("strokeStyle","red")
-                                          .attr("stroke-width",10)
+                                          .attr("stroke-width",3)
                                           .attr("transform","translate(40,30)")
                                           .attr("id","poscircle")
                                         tooltip.transition()

@@ -136,25 +136,15 @@ div.dropdown-wrapper {
     font-weight: bold;
 }
 
-circle {
+.bubbles {
     fill: #d9d9d9;
     stroke: gray;
     opacity: .8;
 }
 
-circle.selected-region {
-    stroke: #122f3d;
-}
 
-circle.selected-country {
-    stroke-width: 3px;
-    stroke: #000000;
-    opacity: 1;
-}
 
-circle.hidden {
-    opacity: .2;
-}
+
 
 path.hidden {
     opacity: .4;

@@ -188,9 +188,10 @@ class bubblePlot {
 
     updatePlot(activeYear, xIndicator, yIndicator, circleSizeIndicator, circleColorIndicator){
 
-
+        
         //this.activeyear = activeYear;
         let that = this;
+        let data = that.data
         let minCS = this.minSize[circleSizeIndicator];
         let maxCS = this.maxSize[circleSizeIndicator];
 
@@ -286,16 +287,59 @@ class bubblePlot {
             .attr("class","bubbles")
             .style("fill", d => colorScale(d.color))
             .on("mouseover",function(d){
+                //console.log(d)
                 let state = "#"+d.state.replace(/[ ]/g,"");
                 d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
                 d3.select("div#lineChart").selectAll("#linename").text(d.state)
                 d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",true)
+                d3.select("#bubbleChart")
+                  .append("div")
+                  .classed("tooltip", true)
+                  .style("opacity", 0);
+                let tooltip = d3.select(".tooltip");
+                tooltip.transition()
+                       .duration(200)
+                       .style("opacity", 0.9);
+                tooltip
+                       .html(that.tooltipRender(d) + "<br/>")
+                       .style("left", (d3.event.pageX + 40) + "px")
+                       .style("top", (d3.event.pageY-80) + "px");
+                let x_scale = d3.scaleLinear()
+                                .domain([2007,2018])
+                                .range([0,600])
+                                .nice()
+                let y_scale = d3.scaleLinear()
+                                .domain([15,0])
+                                .range([0,500])
+                                .nice()
+                d3.select("div#lineChart")
+                .select("svg")
+                .append("circle")
+                .attr("cx",x_scale(activeYear))
+                .attr("cy",function(){
+                    let state = d.state
+                    return (y_scale(data["unemployment"].filter(d=>{
+                                return (d.key == state);
+                            })[0]["values"][activeYear-2007]["Unemployment-rate"]        
+                        )
+                    )     
+                })
+                .attr("r",5)
+                .attr("fill","white")
+                .attr("stroke","red")
+                .attr("stroke-width",3)
+                .attr("transform","translate(40,30)")
+                .attr("id","poscircle")
+
             })
             .on("mouseleave",function(d){
                 let state = "#"+d.state.replace(/[ ]/g,"");
                 d3.select("div#lineChart").selectAll(state).classed("selectedPath",false)
                 d3.select("div#lineChart").selectAll("#linename").text("")
                 d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
+                let tooltip = d3.select(".tooltip");
+                tooltip.remove()
+                d3.selectAll("#poscircle").remove();
             });
 
         let xbAxis = d3.axisBottom()
@@ -482,6 +526,7 @@ class bubblePlot {
             //let cColor = dropColor.node().value;
             let cColor = "unemployment";
             let activeyear = that.activeyear;
+            
             that.updatePlot(activeyear, xValue, yValue, cValue, cColor);
             //console.log(yValue);
             d3.event.stopPropagation();
@@ -500,7 +545,7 @@ class bubblePlot {
         circleGroup.exit().remove();
 
         let circleEnter = circleGroup.enter().append('g');
-        circleEnter.append('circle').classed('neutral', true);
+        circleEnter.append('circle').classed('neutral', true).classed("bubbles",true);
         circleEnter.append('text').classed('circle-size-text', true);
 
         circleGroup = circleEnter.merge(circleGroup);
@@ -526,9 +571,32 @@ class bubblePlot {
         //let cColor = d3.select("#dropdown_color").select('.dropdown-content').select('select').node().value;
         let cColor = "unemployment";
         that.updatePlot(activeyear, xValue, yValue, cValue, cColor);
+        this.activeyear = year
         //console.log(xValue);
 
     }
+    tooltipRender(tooldata) {
+          let text = "<h2>" + "State: " + tooldata.state + "</h2>";
+          //console.log(this.activeyear)
+          let crimedata = this.data["crime"].filter(d=>{
+            return (d.key === tooldata.state);
+          })
+          let unemdata = this.data["unemployment"].filter(d=>{
+            return (d.key === tooldata.state);
+          })
+          let popudata = this.data["population"].filter(d=>{
+            return (d.key === tooldata.state);
+          })
+          let incdata = this.data["income"].filter(d=>{
+            return (d.key === tooldata.state);
+          })
+          //console.log(crimedata,unemdata,popudata,incdata)
+          text += "<h2>" + "Unemployment Rate: " + unemdata[0]["values"][this.activeyear-2007]["Unemployment-rate"] + "%<h2>";
+          text += "<h2>" + "Crime Rate: " + (crimedata[0]["values"][this.activeyear-2007]["rate"]/100).toFixed(2) + "‰<h2>";
+          text += "<h2>" + "Income: " + incdata[0]["values"][this.activeyear-2007]["income"] + "$<h2>";
+          text += "<h2>" + "Population: " + popudata[0]["values"][this.activeyear-2007]["Population"] + "<h2>";
+          return text;
+        }
 
 
 }
