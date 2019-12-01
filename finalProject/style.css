@@ -183,3 +183,8 @@ path.hidden {
     font-size:10px;
 }
 
+.bubbles:hover{
+    stroke: black;
+    stroke-width:3;
+}
+

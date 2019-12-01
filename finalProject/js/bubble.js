@@ -281,8 +281,21 @@ class bubblePlot {
         scatterplot.attr('cx', d => (this.margin.left + (d.xVal ? xbScale(d.xVal) : 0)))
             .attr('cy', d => (this.margin.top + (d.yVal ? ybScale(d.yVal) : this.height)))
             .attr('r', circleSizer)
-            .attr("id", d => (d.id))
-            .style("fill", d => colorScale(d.color));
+            .attr("id", function(d){return(d.state.replace(/[ ]/g,""))})
+            .attr("class","bubbles")
+            .style("fill", d => colorScale(d.color))
+            .on("mouseover",function(d){
+                let state = "#"+d.state.replace(/[ ]/g,"");
+                d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
+                d3.select("div#lineChart").selectAll("#linename").text(d.state)
+                d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",true)
+            })
+            .on("mouseleave",function(d){
+                let state = "#"+d.state.replace(/[ ]/g,"");
+                d3.select("div#lineChart").selectAll(state).classed("selectedPath",false)
+                d3.select("div#lineChart").selectAll("#linename").text("")
+                d3.select("#mapChart").selectAll("g").selectAll("#states").selectAll(state).classed("selected",false)
+            });
 
         let xbAxis = d3.axisBottom()
             .scale(xbScale);
