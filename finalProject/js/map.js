@@ -62,7 +62,7 @@ class Map{
                     .domain([cr_min, cr_max])
                     .range([0, 1]);
                 statearea.attr("fill", function (d) {
-                    if (that.currview == 1) {
+                    if (that.currview == 1 || that.currview == 3) {
                         if (d.unemployment_data != undefined) {
                             //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
                             return (d3.interpolateBlues(unemColorScale(d.unemployment_data[activeyear - 2007].unemployment_rate)))
@@ -74,6 +74,7 @@ class Map{
                             return (d3.interpolateReds(crColorScale(d.crimerate[activeyear - 2007].crimerate)))
                         }
                     }
+
                 })
                 let x_scale = d3.scaleLinear()
                     .domain([2007, 2018])

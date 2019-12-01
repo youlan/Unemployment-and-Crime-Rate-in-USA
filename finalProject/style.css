@@ -162,3 +162,7 @@ path.hidden {
 .legendtext{
     font-size:10px;
 }
+.bubbles:hover{
+    stroke: black;
+    stroke-width:3;
+}
