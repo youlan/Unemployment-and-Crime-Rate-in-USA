@@ -109,8 +109,8 @@ class bubblePlot {
         //console.log(this.maxSize);
 
         this.drawPlot();
-        this.drawDropDown("unemployment", "crime", "income", "population");
-        this.updatePlot(this.activeyear, "unemployment", "crime", "income", "population");
+        this.drawDropDown("unemployment", "crime", "income", "unemployment");
+        this.updatePlot(this.activeyear, "unemployment", "crime", "income", "unemployment");
     }
 
     drawPlot(){
@@ -132,14 +132,14 @@ class bubblePlot {
         cWrap.append('div').attr('id', 'dropdown_c').classed('dropdown', true).append('div').classed('dropdown-content', true)
             .append('select');
 
-        let colorWrap = dropdownWrap.append('g').classed('dropdown-panel', true);
+        //let colorWrap = dropdownWrap.append('g').classed('dropdown-panel', true);
 
-        colorWrap.append('div').classed('c-color', true)
-            .append('text')
-            .text('Circle Color: ');
+        //colorWrap.append('div').classed('c-color', true)
+            //.append('text')
+            //.text('Circle Color: ');
 
-        colorWrap.append('div').attr('id', 'dropdown_color').classed('dropdown', true).append('div').classed('dropdown-content', true)
-            .append('select');
+        //colorWrap.append('div').attr('id', 'dropdown_color').classed('dropdown', true).append('div').classed('dropdown-content', true)
+            //.append('select');
 
         let xWrap = dropdownWrap.append('div').classed('dropdown-panel', true);
 
@@ -371,14 +371,15 @@ class bubblePlot {
             let cValue = this.options[this.selectedIndex].value.toLowerCase();
             let xValue = dropX.node().value.toLowerCase();
             let yValue = dropY.node().value.toLowerCase();
-            let cColor = dropColor.node().value.toLowerCase();
+            //let cColor = dropColor.node().value.toLowerCase();
+            let cColor = "unemployment";
             let activeyear = that.activeyear;
             that.updatePlot(activeyear, xValue, yValue, cValue, cColor);
             d3.event.stopPropagation();
         });
 
         /* CIRCLE COLOR DROPDOWN */
-        let dropColor = dropDownWrapper.select('#dropdown_color').select('.dropdown-content').select('select');
+        /*let dropColor = dropDownWrapper.select('#dropdown_color').select('.dropdown-content').select('select');
 
         let optionsColor = dropColor.selectAll('option')
             .data(dropData);
@@ -406,7 +407,7 @@ class bubblePlot {
             that.updatePlot(activeyear, xValue, yValue, cValue, cColor);
 
             d3.event.stopPropagation();
-        });
+        }); */
 
         /* X DROPDOWN */
         let dropX = dropDownWrapper.select('#dropdown_x').select('.dropdown-content').select('select');
@@ -432,7 +433,8 @@ class bubblePlot {
             let xValue = this.options[this.selectedIndex].value;
             let yValue = dropY.node().value;
             let cValue = dropC.node().value;
-            let cColor = dropColor.node().value;
+            //let cColor = dropColor.node().value;
+            let cColor = "unemployment";
             let activeyear = that.activeyear;
             that.updatePlot(activeyear, xValue, yValue, cValue, cColor);
 
@@ -464,7 +466,8 @@ class bubblePlot {
             let yValue = this.options[this.selectedIndex].value;
             let xValue = dropX.node().value;
             let cValue = dropC.node().value;
-            let cColor = dropColor.node().value;
+            //let cColor = dropColor.node().value;
+            let cColor = "unemployment";
             let activeyear = that.activeyear;
             that.updatePlot(activeyear, xValue, yValue, cValue, cColor);
             //console.log(yValue);
@@ -506,7 +509,8 @@ class bubblePlot {
         let xValue = d3.select("#dropdown_x").select('.dropdown-content').select('select').node().value;
         let yValue = d3.select("#dropdown_y").select('.dropdown-content').select('select').node().value;
         let cValue = d3.select("#dropdown_c").select('.dropdown-content').select('select').node().value;
-        let cColor = d3.select("#dropdown_color").select('.dropdown-content').select('select').node().value;
+        //let cColor = d3.select("#dropdown_color").select('.dropdown-content').select('select').node().value;
+        let cColor = "unemployment";
         that.updatePlot(activeyear, xValue, yValue, cValue, cColor);
         //console.log(xValue);
 
