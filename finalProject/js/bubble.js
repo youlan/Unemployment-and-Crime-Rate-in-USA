@@ -333,8 +333,12 @@ class bubblePlot {
             .text(axisLabel[yIndicator]);
             //.text(yIndicator.charAt(0).toUpperCase() + yIndicator.slice(1));
 
+        if (circleSizeIndicator === "crime"){
+            this.drawLegend(minCS/100, maxCS/100);
+        }else{
+            this.drawLegend(minCS, maxCS);
+        }
 
-        this.drawLegend(minCS, maxCS);
 
     }
 
@@ -506,6 +510,7 @@ class bubblePlot {
         circleGroup.select('circle').attr('r', (d) => scale(d));
         circleGroup.select('circle').attr('cx', '0');
         circleGroup.select('circle').attr('cy', '0');
+
         let numText = circleGroup.select('text').text(d => new Intl.NumberFormat().format(d));
 
         numText.attr('transform', (d) => 'translate(' + ((scale(d)) + 10) + ', 0)');
