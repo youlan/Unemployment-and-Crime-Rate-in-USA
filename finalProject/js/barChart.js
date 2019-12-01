@@ -115,6 +115,17 @@ class BarPlot {
             .tickSize(-this.width)
             .scale(yScale.nice());
 
+        let yCAxis = d3.axisLeft()
+            .ticks(8)
+            .tickSize(-this.width)
+            .scale(yScale.nice())
+            .tickFormat(d=>d/100);
+
+        let yAxisSet = {
+            "unemployment": yAxis,
+            "crime": yCAxis
+        }
+
 
         d3.select("#y-axis").selectAll(".grid").remove();
         d3.select("#x-axis").selectAll(".axis").remove();
@@ -122,7 +133,7 @@ class BarPlot {
 
         d3.select("#y-axis").append('g').attr("class","grid")
             .attr("transform", "translate("+that.margin.left+"," + that.margin.top + ")")
-            .call(yAxis)
+            .call(yAxisSet[that.label])
             .call(g => g.select(".domain").remove())
             .call(g => g.selectAll(".tick:not(:first-of-type) line")
             //.style("opacity",0.2)
