@@ -160,6 +160,7 @@ path.hidden {
     opacity: .4;
 }
 
+
 .tooltip {
     position: absolute;
     text-align: center;
@@ -174,3 +175,8 @@ path.hidden {
     font-weight: bold;
     line-height: 1.2;
 }
+
+.legendtext{
+    font-size:10px;
+}
+
