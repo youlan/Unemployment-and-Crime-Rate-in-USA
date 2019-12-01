@@ -78,7 +78,7 @@ class Map{
                 })
                 let x_scale = d3.scaleLinear()
                     .domain([2007, 2018])
-                    .range([0, 520])
+                    .range([0, 600])
                     .nice()
                 //console.log(d3.select("#lineChart").select("#yearline"))
                 let yearline = d3.select("#lineChart").select("#yearline").attr("x1", x_scale(activeyear)).attr("x2", x_scale(activeyear))
@@ -362,19 +362,34 @@ class Map{
                                                         .domain([2007,2018])
                                                         .range([0,600])
                                                         .nice()
-                                        let y_scale = d3.scaleLinear()
+                                        let y_scale_um = d3.scaleLinear()
                                                         .domain([15,0])
+                                                        .range([0,500])
+                                                        .nice()
+                                        let y_scale_cr = d3.scaleLinear()
+                                                        .domain([1000,0])
                                                         .range([0,500])
                                                         .nice()
                                         d3.select("div#lineChart").selectAll("#linename").text(d.properties.name)
                                         d3.select("div#bubbleChart").selectAll(state).classed("selectedBubble",true)
                                         d3.select("div#lineChart")
+                                          .select("svg")
                                           .append("circle")
                                           .attr("cx",x_scale(year))
-                                          .attr("cy",function(d){return 10})
+                                          .attr("cy",function(){
+                                            if (that.currview == 1 || that.currview == 3){
+                                                return y_scale_um(d["unemployment_data"][year-2007]["unemployment_rate"])
+                                            }
+                                            if (that.currview == 2){
+                                                return y_scale_cr(d["crimerate"][year-2007]["crimerate"])
+                                            }
+                                        })
                                           .attr("r",3)
                                           .attr("fill","none")
                                           .attr("stroke","black")
+                                          .attr("strokeStyle","red")
+                                          .attr("stroke-width",10)
+                                          .attr("transform","translate(40,30)")
                                           .attr("id","poscircle")
                                         tooltip.transition()
                                                .duration(200)
@@ -396,7 +411,7 @@ class Map{
                                         d3.select("div#bubbleChart").selectAll(state).classed("selectedBubble",false)
                                         let tooltip = d3.select(".tooltip");
                                         tooltip.remove()
-                                        //d3.selectAll("#poscircle").remove();
+                                        d3.selectAll("#poscircle").remove();
                                     });
 
             g_area.append("path")
@@ -537,7 +552,7 @@ class Map{
           //console.log(crime)
           text += "<h2>" + "Unemployment Rate: " + other[0]["Unemployment-rate"] + "%<h2>";
           text += "<h2>" + "Crime Rate: " + (crime[0]["rate"]/100).toFixed(2) + "‰<h2>";
-          text += "<h2>" + "Income: " + other[0]["Income"] + "<h2>";
+          text += "<h2>" + "Income: " + other[0]["Income"] + "$<h2>";
           text += "<h2>" + "Population: " + other[0]["Population"] + "<h2>";
           return text;
         }
