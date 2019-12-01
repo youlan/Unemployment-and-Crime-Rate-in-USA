@@ -5,7 +5,7 @@ loadData().then(mapData => {
     this.activeYear = "2007";
     let that = this;
     this.dataLabel = "unemployment";
-
+    const storyTelling = new StoryTelling(mapData);
     const bubbleChart = new bubblePlot(mapData, this.activeYear);
     document.getElementById("bubbleChart").style.display = "none";
     const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
@@ -83,4 +83,7 @@ async function loadData() {
         'income': sIncome,
         "population":sPopulation
     };
+}
+function closeNav() {
+  document.getElementById("myNav").style.width = "0%";
 }
