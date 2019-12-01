@@ -276,11 +276,7 @@ class Map{
                     }
                 }
             }
-            d3.select("#mapChart")
-              .append("div")
-              .classed("tooltip", true)
-              .style("opacity", 0);
-            let tooltip = d3.select(".tooltip");
+            
             //console.log(test)
             // g_area.append("g")
             //       .attr("id", "counties")
@@ -323,7 +319,11 @@ class Map{
                   
                   .on('mouseenter', function (d) {
                                         let state = "#"+this.id;
-
+                                        d3.select("#mapChart")
+                                          .append("div")
+                                          .classed("tooltip", true)
+                                          .style("opacity", 0);
+                                        let tooltip = d3.select(".tooltip");
                                         if(that.currview != 3){
                                           let staterect = d3.select("div#bar-plot").selectAll(state);
                                           //staterect.style("opacity",0.5);
@@ -358,6 +358,7 @@ class Map{
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
                                         d3.select("div#lineChart").selectAll("#linename").text(d.properties.name)
+                                        d3.select("div#bubbleChart").selectAll(state).classed("selectedBubble",true)
                                         tooltip.transition()
                                                .duration(200)
                                                .style("opacity", 0.9);
@@ -375,8 +376,9 @@ class Map{
                                         //d3.select(this).style("opacity",1);
                                         d3.select(".bars").selectAll('#limit').remove()
                                         d3.select("div#lineChart").selectAll("#linename").text("")
-                                        tooltip.style("opacity", 0);
-                                        tooltip.selectAll("h2").remove()
+                                        d3.select("div#bubbleChart").selectAll(state).classed("selectedBubble",false)
+                                        let tooltip = d3.select(".tooltip");
+                                        tooltip.remove()
                                     });
 
             g_area.append("path")
