@@ -159,3 +159,6 @@ circle.hidden {
 path.hidden {
     opacity: .4;
 }
+.legendtext{
+    font-size:10px;
+}
