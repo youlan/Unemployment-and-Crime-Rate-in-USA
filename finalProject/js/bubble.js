@@ -268,7 +268,7 @@ class bubblePlot {
             'population': "Population",
             'income': "Annual Income ($)",
             'unemployment': "Unemployment Rate (%)",
-            'crime': "Crime Rate (%)"
+            'crime': "Crime Rate (‰)"
         }
 
 
