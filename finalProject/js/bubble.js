@@ -180,7 +180,7 @@ class bubblePlot {
             .classed('circle-legend', true)
             .append('svg')
             .append('g')
-            .attr('transform', 'translate(700, 20)');
+            .attr('transform', 'translate(700, 10)');
 
 
 
@@ -264,12 +264,13 @@ class bubblePlot {
         let colorScale = d3.scaleSequential(this.colorSelect[circleColorIndicator])
             .domain([this.minSize[circleColorIndicator], this.maxSize[circleColorIndicator]]);
 
-        //import {legend} from "@d3/color-legend";
+        let axisLabel = {
+            'population': "Population",
+            'income': "Annual Income ($)",
+            'unemployment': "Unemployment Rate (%)",
+            'crime': "Crime Rate (‰)"
+        }
 
-        //legend({
-         //   color: d3.scaleSequential([this.minSize[circleColorIndicator], this.maxSize[circleColorIndicator]], d3.interpolatePRGn)
-        //    title: circleColorIndicator
-       // })
 
         let scatterplot = this.svgGroup.selectAll('circle').data(plot_Data);
 
@@ -299,6 +300,10 @@ class bubblePlot {
 
         let xbAxis = d3.axisBottom()
             .scale(xbScale);
+        if (xIndicator === "crime"){
+            xbAxis.tickFormat(d=>d/100);
+        }
+
         d3.select("#bx-axis")
             .classed("axis",true)
             .attr("transform", "translate("+this.margin.left+"," + (this.height+this.margin.top) + ")")
@@ -309,11 +314,14 @@ class bubblePlot {
                 "translate(" + (this.width)/2 + " ," +
                 (this.height + this.margin.top + 40) + ")")
             .classed("axis-label", true)
-            .text(xIndicator.charAt(0).toUpperCase() + xIndicator.slice(1));
+            .text(axisLabel[xIndicator]);
+            //.text(xIndicator.charAt(0).toUpperCase() + xIndicator.slice(1));
 
         let ybAxis = d3.axisLeft()
             .scale(ybScale);
-
+        if (yIndicator === "crime"){
+            ybAxis.tickFormat(d=>d/100);
+        }
         d3.select("#by-axis")
             .attr("transform",
                 "translate("+this.margin.left+"," + this.margin.top  + ")")
@@ -322,10 +330,15 @@ class bubblePlot {
         d3.select("#yaxis-label")
             .attr("transform", "translate(12, "+(this.height / 2 + this.margin.top)+") rotate(-90)")
             .classed("axis-label", true)
-            .text(yIndicator.charAt(0).toUpperCase() + yIndicator.slice(1));
+            .text(axisLabel[yIndicator]);
+            //.text(yIndicator.charAt(0).toUpperCase() + yIndicator.slice(1));
 
+        if (circleSizeIndicator === "crime"){
+            this.drawLegend(minCS/100, maxCS/100);
+        }else{
+            this.drawLegend(minCS, maxCS);
+        }
 
-        this.drawLegend(minCS, maxCS);
 
     }
 
@@ -497,6 +510,7 @@ class bubblePlot {
         circleGroup.select('circle').attr('r', (d) => scale(d));
         circleGroup.select('circle').attr('cx', '0');
         circleGroup.select('circle').attr('cy', '0');
+
         let numText = circleGroup.select('text').text(d => new Intl.NumberFormat().format(d));
 
         numText.attr('transform', (d) => 'translate(' + ((scale(d)) + 10) + ', 0)');
