@@ -164,8 +164,8 @@ class bubblePlot {
         d3.select('#chart-view')
             .append('svg').classed('plot-svg', true)
             .attr("width", this.width + this.margin.left + this.margin.right)
-            .attr("height", this.height + this.margin.top + this.margin.bottom);
-            //.attr("transform","translate(600, 0)");
+            .attr("height", this.height + this.margin.top + this.margin.bottom)
+            .attr("transform","translate(0, 40)");
             //.attr("transform", "("+ this.margin.left+","+this.margin.top+")");
 
         this.svgGroup = d3.select('#chart-view').select('.plot-svg').append('g');
