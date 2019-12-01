@@ -80,10 +80,10 @@ body{
 
 div.dropdown-wrapper {
     display: inline-block;
-    margin-left: 75px;
-    width: 320px;
-    height: 130px;
-    padding: 2px;
+    margin-left: 100px;
+    width: 300px;
+    height: 200px;
+    padding: 15px;
 }
 
 .dropdown {
@@ -97,7 +97,10 @@ div.dropdown-wrapper {
     width: 1%7;
     display: inline-block;
     float: left;
-    padding-right: 5px;
+    padding-right: 10px;
+    stroke: black;
+    font-weight: bold;
+    text-align: center;
 }
 
 

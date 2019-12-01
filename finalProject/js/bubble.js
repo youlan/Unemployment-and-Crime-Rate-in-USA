@@ -114,10 +114,14 @@ class bubblePlot {
     }
 
     drawPlot(){
-        d3.select("#bubbleChart").append("div").attr("id","chart-view");
+        d3.select("#bubbleChart").append("div").attr("id","chart-view")
+            .attr("width", 1600)
+            .attr("height", 650);
 
 
-        let dropdownWrap = d3.select('#chart-view').append('div').classed('dropdown-wrapper', true);
+        let dropdownWrap = d3.select('#chart-view').append('div').classed('dropdown-wrapper', true)
+            .attr("width", 300)
+            .attr("height", 650);
 
         let cWrap = dropdownWrap.append('div').classed('dropdown-panel', true);
 
@@ -128,7 +132,7 @@ class bubblePlot {
         cWrap.append('div').attr('id', 'dropdown_c').classed('dropdown', true).append('div').classed('dropdown-content', true)
             .append('select');
 
-        let colorWrap = dropdownWrap.append('div').classed('dropdown-panel', true);
+        let colorWrap = dropdownWrap.append('g').classed('dropdown-panel', true);
 
         colorWrap.append('div').classed('c-color', true)
             .append('text')
@@ -161,6 +165,8 @@ class bubblePlot {
             .append('svg').classed('plot-svg', true)
             .attr("width", this.width + this.margin.left + this.margin.right)
             .attr("height", this.height + this.margin.top + this.margin.bottom);
+            //.attr("transform","translate(600, 0)");
+            //.attr("transform", "("+ this.margin.left+","+this.margin.top+")");
 
         this.svgGroup = d3.select('#chart-view').select('.plot-svg').append('g');
 
@@ -169,23 +175,19 @@ class bubblePlot {
         this.svgGroup.append("g").attr("id","by-axis");
         this.svgGroup.append("text").attr("id", "yaxis-label");
 
-        d3.select('#chart-view')
-            .append('div')
+        d3.select('.plot-svg')
+            .append('g')
             .classed('circle-legend', true)
             .append('svg')
             .append('g')
-            .attr('transform', 'translate(10, 0)');
+            .attr('transform', 'translate(700, 20)');
 
 
 
     }
 
     updatePlot(activeYear, xIndicator, yIndicator, circleSizeIndicator, circleColorIndicator){
-        //console.log(activeYear);
-        //console.log(circleSizeIndicator);
-        //console.log(circleColorIndicator);
-        //console.log(xIndicator);
-        //console.log(yIndicator);
+
 
         //this.activeyear = activeYear;
         let that = this;
