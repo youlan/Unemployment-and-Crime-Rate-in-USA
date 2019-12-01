@@ -325,7 +325,7 @@ class Map{
 
                                         if(that.currview != 3){
                                           let staterect = d3.select("div#bar-plot").selectAll(state);
-                                          staterect.style("opacity",0.5);
+                                          //staterect.style("opacity",0.5);
                                           const y = staterect.attr("y");
                                           var line = d3.select(".bars")
                                                        .append("line")
