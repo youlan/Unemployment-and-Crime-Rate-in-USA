@@ -5,7 +5,7 @@ loadData().then(mapData => {
     this.activeYear = "2007";
     let that = this;
     this.dataLabel = "unemployment";
-    
+    document.body.style.zoom = 0.7;
     const bubbleChart = new bubblePlot(mapData, this.activeYear);
     document.getElementById("bubbleChart").style.display = "none";
     const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
