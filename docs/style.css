@@ -1,3 +1,4 @@
+
 .background {
     fill: none;
     pointer-events: all;
@@ -111,7 +112,7 @@ body{
 div.dropdown-wrapper {
     display: inline-block;
     margin-left: 75px;
-    width: 320px;
+    width: 400px;
     height: 130px;
     padding: 2px;
 }
@@ -120,11 +121,11 @@ div.dropdown-wrapper {
     float: left;
 }
 
-.c-color,
+
 .y-label,
 .x-label,
 .c-label {
-    width: 1%7;
+    width: 150px;
     display: inline-block;
     float: left;
     padding-right: 5px;
