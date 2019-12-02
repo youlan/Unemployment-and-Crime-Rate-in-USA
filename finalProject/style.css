@@ -172,7 +172,7 @@ div.dropdown-wrapper {
 
 .bubbles {
     fill: #d9d9d9;
-    stroke: gray;
+    stroke: white;
     opacity: .8;
 }
 
@@ -205,7 +205,7 @@ path.hidden {
 }
 
 .bubbles:hover{
-    stroke: black;
+    stroke: orange;
     stroke-width:3;
     fill:orange;
 }
@@ -253,7 +253,7 @@ path.hidden {
   font-size: 60px;
 }
 .selectedBubble{
-    stroke: black;
+    stroke: orange;
     stroke-width:3;
     fill:orange;
 }
