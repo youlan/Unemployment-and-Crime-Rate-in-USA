@@ -114,9 +114,7 @@ class bubblePlot {
     }
 
     drawPlot(){
-        d3.select("#bubbleChart").append("div").attr("id","chart-view")
-            .attr("width", 1600)
-            .attr("height", 650);
+        d3.select("#bubbleChart").append("div").attr("id","chart-view");
 
 
         let dropdownWrap = d3.select('#chart-view').append('div').classed('dropdown-wrapper', true);
