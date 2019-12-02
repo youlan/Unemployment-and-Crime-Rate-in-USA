@@ -2,7 +2,15 @@
     fill: none;
     pointer-events: all;
 }
-
+body{
+  background-color: #2a3039
+}
+text{
+  color: white;
+}
+.legendtext{
+  fill: white;
+}
 #states {
     fill: #aaa;
 }
@@ -51,19 +59,41 @@
     opacity: 1;
 }
 .linespace{
-    stroke:black;
+    stroke:white;
     stroke-dasharray: 2 2;
     opacity: 0.5;
+
 }
 
 .mapline{
     display: flex;
     align-items: stretch;
 }
-
+@font-face{
+  font-family: capture;
+  src: url("Capture it.ttf");
+}
+.headline{
+  font-family: capture;
+  color:white;
+  font-size: 50px;
+}
+.author{
+  color:white;
+  font-size: 30px;
+}
 .activeYear-background {
+    fill:white;
     font-size: 50px;
     opacity: .4;
+}
+.parameter-value{
+  fill:red;
+}
+.btn-diy {
+  color: #ffffff;
+  background-color: #428bca;
+  border-color: #357ebd;
 }
 body{
      /*background:#2a3039;*/
@@ -134,6 +164,10 @@ div.dropdown-wrapper {
 .circle-legend .subLabel {
     font-size: 11px;
     font-weight: bold;
+}
+
+.circle-size-text{
+  fill:white;
 }
 
 .bubbles {
@@ -223,3 +257,4 @@ path.hidden {
     stroke-width:3;
     fill:orange;
 }
+

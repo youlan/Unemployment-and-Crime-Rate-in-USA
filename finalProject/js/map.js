@@ -217,21 +217,7 @@ class Map{
                 
                 that.updateOverview("overview");
             }
-            // if(d==4){
-            //     that.lineChart.drawupdate(that.unemstate, "unemployment", that.activeyear)
-            //     d3.select("#legend1").attr("fill", d3.interpolateBlues(unemColorScale(13.5)))
-            //     d3.select("#legend2").attr("fill", d3.interpolateBlues(unemColorScale(10.5)))
-            //     d3.select("#legend3").attr("fill", d3.interpolateBlues(unemColorScale(7.5)))
-            //     d3.select("#legend4").attr("fill", d3.interpolateBlues(unemColorScale(4.5)))
-            //     d3.select("#legend5").attr("fill", d3.interpolateBlues(unemColorScale(1.5)))
-            //     d3.select("#legendtext1").text("15")
-            //     d3.select("#legendtext2").text("12")
-            //     d3.select("#legendtext3").text("9")
-            //     d3.select("#legendtext4").text("6")
-            //     d3.select("#legendtext5").text("3")
-            //     d3.select("#legendtext6").text("0")
-            //     d3.select("#legendname").text("unemployment rate(%)")
-            // }
+            
           let statearea = d3.select("#mapChart").select("#states").selectAll("path")
           
           statearea.attr("fill",function(d){
@@ -369,6 +355,7 @@ class Map{
                                         d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
                                         //console.log(d3.selectAll("path").select(state))
                                         //d3.selectAll("path").select(state).attr("fill","orange")
+                                        
                                         let x_scale = d3.scaleLinear()
                                                         .domain([2007,2018])
                                                         .range([0,600])

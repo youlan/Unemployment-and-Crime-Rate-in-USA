@@ -137,8 +137,10 @@ class BarPlot {
             .call(g => g.select(".domain").remove())
             .call(g => g.selectAll(".tick:not(:first-of-type) line")
             //.style("opacity",0.2)
+                .attr("stroke", "white")
                 .attr("stroke-opacity", 0.5)
                 .attr("stroke-dasharray", "2 2"))
+
             .call(g => g.selectAll(".tick text")
                 .attr("x", -4)
                 .attr("dy", -4))

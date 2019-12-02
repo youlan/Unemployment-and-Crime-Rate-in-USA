@@ -171,9 +171,9 @@ class bubblePlot {
         this.svgGroup = d3.select('#chart-view').select('.plot-svg').append('g');
 
         this.svgGroup.append("g").attr("id","bx-axis");
-        this.svgGroup.append("text").attr("id", "xaxis-label");
+        this.svgGroup.append("text").attr("id", "xaxis-label").attr("fill","white");
         this.svgGroup.append("g").attr("id","by-axis");
-        this.svgGroup.append("text").attr("id", "yaxis-label");
+        this.svgGroup.append("text").attr("id", "yaxis-label").attr("fill","white");
 
         d3.select('.plot-svg')
             .append('g')
@@ -288,6 +288,23 @@ class bubblePlot {
             .style("fill", d => colorScale(d.color))
             .on("mouseover",function(d){
                 //console.log(d)
+                let loc = d3.select(".plot-svg")
+                loc.append("line")
+                   .attr("x1",80)
+                   .attr("y1",20 + (d.yVal ? ybScale(d.yVal) : this.height))
+                   .attr("x2",80 + (d.xVal ? xbScale(d.xVal) : 0))
+                   .attr("y2",20 + (d.yVal ? ybScale(d.yVal) : this.height))
+                   .attr("stroke","red")
+                   .attr("stroke-dasharray", "2 2")
+                   .attr("class","position")
+                loc.append("line")
+                   .attr("x1",80 + (d.xVal ? xbScale(d.xVal) : 0))
+                   .attr("y1",20 + (d.yVal ? ybScale(d.yVal) : this.height))
+                   .attr("x2",80 + (d.xVal ? xbScale(d.xVal) : 0))
+                   .attr("y2",500)
+                   .attr("stroke","red")
+                   .attr("stroke-dasharray", "2 2")
+                   .attr("class","position")
                 let state = "#"+d.state.replace(/[ ]/g,"");
                 d3.select("div#lineChart").selectAll(state).classed("selectedPath",true)
                 d3.select("div#lineChart").selectAll("#linename").text(d.state)
@@ -340,6 +357,7 @@ class bubblePlot {
                 let tooltip = d3.select(".tooltip");
                 tooltip.remove()
                 d3.selectAll("#poscircle").remove();
+                d3.selectAll(".position").remove();
             });
 
         let xbAxis = d3.axisBottom()
@@ -351,7 +369,9 @@ class bubblePlot {
         d3.select("#bx-axis")
             .classed("axis",true)
             .attr("transform", "translate("+this.margin.left+"," + (this.height+this.margin.top) + ")")
-            .call(xbAxis);
+            .call(xbAxis)
+            .call(g => g.select(".domain").attr("stroke","white"))
+            .call(g => g.selectAll(".tick:not(:first-of-type) line").attr("stroke","white"))    ;
 
         d3.select("#xaxis-label")
             .attr("transform",
@@ -369,7 +389,9 @@ class bubblePlot {
         d3.select("#by-axis")
             .attr("transform",
                 "translate("+this.margin.left+"," + this.margin.top  + ")")
-            .call(ybAxis);
+            .call(ybAxis)
+            .call(g => g.select(".domain").attr("stroke","white"))
+            .call(g => g.selectAll(".tick:not(:first-of-type) line").attr("stroke","white"));
 
         d3.select("#yaxis-label")
             .attr("transform", "translate(12, "+(this.height / 2 + this.margin.top)+") rotate(-90)")
