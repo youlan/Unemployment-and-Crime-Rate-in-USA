@@ -21,10 +21,12 @@ class Map{
             return new Date(2007 + d, 10, 3);
         });
 
-        const showactiveYear = d3.select('div#slider-vertical').append("svg").attr('width', 150)
+        const showactiveYear = d3.select('div#slider-vertical').append("svg").attr("id","yearsliderSVG")
+            .attr("width",260).attr("height",500)
+             .append("svg").attr('width', 260)
             .attr('height', 500).append("text").attr("id", "htmlYear");
-        showactiveYear.attr("x", 20)
-            .attr("y", 250)
+        showactiveYear.attr("x", 120)
+            .attr("y", 150)
             .attr("align", "center")
             .classed("activeYear-background", true)
             .html(this.activeyear);
@@ -87,7 +89,7 @@ class Map{
             });
 
         var gVertical = d3
-            .select('div#slider-vertical')
+            .select('#yearsliderSVG')
             .append('svg')
             .attr('width', 100)
             .attr('height', 500)
