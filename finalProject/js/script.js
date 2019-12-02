@@ -5,7 +5,7 @@ loadData().then(mapData => {
     this.activeYear = "2007";
     let that = this;
     this.dataLabel = "unemployment";
-    const storyTelling = new StoryTelling(mapData);
+    
     const bubbleChart = new bubblePlot(mapData, this.activeYear);
     document.getElementById("bubbleChart").style.display = "none";
     const barChart = new BarPlot(mapData, this.activeYear, this.dataLabel);
@@ -41,7 +41,7 @@ loadData().then(mapData => {
 
                 const lineChart = new Line(unemstate, crimerate)
                 const mapChart = new Map(unemstate, crimerate, this.activeYear, updateYear, updateState, updateOverview, lineChart, otherdata)
-
+                const storyTelling = new StoryTelling(mapData,lineChart,unemstate,this.activeYear,updateOverview);
 
                 function updateState() {
                     if (that.activeState == undefined || that.activeState == null) {

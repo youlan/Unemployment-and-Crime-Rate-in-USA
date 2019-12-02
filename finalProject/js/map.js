@@ -146,10 +146,11 @@ class Map{
                            .attr('height', height + margin.top + margin.bottom);
         let unemstate = this.unemstate
         let crimerate = this.crimerate
-        //console.log(crimerate)
+     
         let selection_button = d3.select(".btn-group").selectAll("button").data([1,2,3])
 
         selection_button.on("click",function(d){
+            console.log(d)
             that.currview = d
             //console.log(d)
             //console.log(that.lineChart)
@@ -213,31 +214,40 @@ class Map{
                 d3.select("#legendtext5").text("3")
                 d3.select("#legendtext6").text("0")
                 d3.select("#legendname").text("unemployment rate(%)")
-                console.log("here")
+                
                 that.updateOverview("overview");
             }
-
+            // if(d==4){
+            //     that.lineChart.drawupdate(that.unemstate, "unemployment", that.activeyear)
+            //     d3.select("#legend1").attr("fill", d3.interpolateBlues(unemColorScale(13.5)))
+            //     d3.select("#legend2").attr("fill", d3.interpolateBlues(unemColorScale(10.5)))
+            //     d3.select("#legend3").attr("fill", d3.interpolateBlues(unemColorScale(7.5)))
+            //     d3.select("#legend4").attr("fill", d3.interpolateBlues(unemColorScale(4.5)))
+            //     d3.select("#legend5").attr("fill", d3.interpolateBlues(unemColorScale(1.5)))
+            //     d3.select("#legendtext1").text("15")
+            //     d3.select("#legendtext2").text("12")
+            //     d3.select("#legendtext3").text("9")
+            //     d3.select("#legendtext4").text("6")
+            //     d3.select("#legendtext5").text("3")
+            //     d3.select("#legendtext6").text("0")
+            //     d3.select("#legendname").text("unemployment rate(%)")
+            // }
           let statearea = d3.select("#mapChart").select("#states").selectAll("path")
           
           statearea.attr("fill",function(d){
-                                  if(that.currview == 1){
+                                  if(that.currview != 2){
                                       if(d.unemployment_data != undefined){
                                           //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
                                           return(d3.interpolateBlues(unemColorScale(d.unemployment_data[that.activeyear-2007].unemployment_rate)))
                                       }
                                   }
-                                  if(that.currview == 2){
+                                  else{
                                       if(d.crimerate != undefined){
                                           //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
                                           return(d3.interpolateReds(crColorScale(d.crimerate[that.activeyear-2007].crimerate)))
                                       }
                                   }
-                                  if(that.currview == 3){
-                                    if(d.unemployment_data != undefined){
-                                          //console.log(d.properties, d.unemployment_data[0].unemployment_rate)
-                                          return(d3.interpolateBlues(unemColorScale(d.unemployment_data[that.activeyear-2007].unemployment_rate)))
-                                      }
-                                  }
+                                  
                               })  
           //console.log(this.currview)
         })
