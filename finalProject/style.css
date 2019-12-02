@@ -205,7 +205,7 @@ path.hidden {
 }
 
 .bubbles:hover{
-    stroke: orange;
+    stroke: red;
     stroke-width:3;
     fill:orange;
 }
@@ -253,7 +253,7 @@ path.hidden {
   font-size: 60px;
 }
 .selectedBubble{
-    stroke: orange;
+    stroke: red;
     stroke-width:3;
     fill:orange;
 }
