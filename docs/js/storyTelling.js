@@ -59,7 +59,7 @@ class StoryTelling {
       let c0Enter = c0.enter().append("text");
       c0 = c0Enter.merge(c0);
       d3.select(".story").append("rect")
-        .attr("x",230)
+        .attr("x",100)
         .attr("y",100)
         .attr("width",50)
         .attr("height",400)
