@@ -11,30 +11,7 @@ class Line{
 		                    .append("svg")
 		                  	.attr("width",700)
 		                    .attr("height",550)
-        
-        // let x_scale = d3.scaleLinear()
-        //                 .domain([2007,2019])
-        //                 .range([0,600])
-        //                 .nice()
-        // let x_axis = d3.axisBottom(x_scale)
-        //                .tickFormat(d=>d)
-        // 	             //.tickSize(1)
-        // 	             .tickPadding(6)
-        // linesvg.append("g")
-        //        .call(x_axis)    
-        //        .attr("transform","translate(20,510)")
-        //console.log(d3.min(this.crimerate, d=>parseInt(d.rate)))
-        // let selection_button = d3.select(".btn-group").selectAll("button").data([1,2,3])
-        // //console.log(selection_button)
-        // selection_button.on("click",function(d){
-        //     if(d == 1){
-        //         //console.log(that.crimerate)
-        //         that.drawupdate(that.unemstate, "unemployment")
-        //     }
-        //     if(d == 2){
-        //         that.drawupdate(that.crimerate, "crime")
-        //     }
-        // })
+
 
 	}
 	drawupdate(activedata,type,activeyear){

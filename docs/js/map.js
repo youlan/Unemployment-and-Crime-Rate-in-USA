@@ -22,8 +22,8 @@ class Map{
         });
 
         const showactiveYear = d3.select('div#slider-vertical').append("svg").attr("id","yearsliderSVG")
-            .attr("width",260).attr("height",500)
-             .append("svg").attr('width', 260)
+            .attr("width",240).attr("height",500)
+             .append("svg").attr('width', 240)
             .attr('height', 500).append("text").attr("id", "htmlYear");
         showactiveYear.attr("x", 120)
             .attr("y", 150)
@@ -94,7 +94,7 @@ class Map{
             .attr('width', 100)
             .attr('height', 500)
             .append('g')
-            .attr('transform', 'translate(90, 40)');
+            .attr('transform', 'translate(90, 60)');
 
         gVertical.call(sliderVertical);
 
@@ -104,14 +104,14 @@ class Map{
     drawMap(){
         let that = this;
         let margin = {
-            top:10,
+            top:60,
             bottom:10,
             left:0,
             right:0
         };
         
         //let width = (parseInt(d3.select("div#mapChart").style("width")) - margin.left - margin.right);
-        let width = 900;
+        let width = 700;
         let mapRatio = 0.5;
         let height = width * mapRatio;
         let active = d3.select(null);
@@ -420,7 +420,7 @@ class Map{
                   .attr("d", mappath)
                   //.attr("fill", "black")
             g_area.append("rect")
-                  .attr("x",780)
+                  .attr("x",600)
                   .attr("y",300)
                   .attr("height",15)
                   .attr("width",10)
@@ -428,7 +428,7 @@ class Map{
                   .attr("class","legend")
                   .attr("fill", d3.interpolateBlues(unemColorScale(13.5)))
             g_area.append("rect")
-                  .attr("x",780)
+                  .attr("x",600)
                   .attr("y",315)
                   .attr("height",15)
                   .attr("width",10)
@@ -436,7 +436,7 @@ class Map{
                   .attr("class","legend")
                   .attr("fill", d3.interpolateBlues(unemColorScale(10.5)))
             g_area.append("rect")
-                  .attr("x",780)
+                  .attr("x",600)
                   .attr("y",330)
                   .attr("height",15)
                   .attr("width",10)
@@ -444,7 +444,7 @@ class Map{
                   .attr("class","legend")
                   .attr("fill", d3.interpolateBlues(unemColorScale(7.5)))
             g_area.append("rect")
-                  .attr("x",780)
+                  .attr("x",600)
                   .attr("y",345)
                   .attr("height",15)
                   .attr("width",10)
@@ -452,7 +452,7 @@ class Map{
                   .attr("class","legend")
                   .attr("fill", d3.interpolateBlues(unemColorScale(4.5)))
             g_area.append("rect")
-                  .attr("x",780)
+                  .attr("x",600)
                   .attr("y",360)
                   .attr("height",15)
                   .attr("width",10)
@@ -460,43 +460,43 @@ class Map{
                   .attr("class","legend")
                   .attr("fill", d3.interpolateBlues(unemColorScale(1.5)))
             g_area.append("text")
-                  .attr("x",792)
+                  .attr("x",612)
                   .attr("y",303)
                   .attr("class","legendtext")
                   .attr("id","legendtext1")
                   .text("15")
             g_area.append("text")
-                  .attr("x",792)
+                  .attr("x",612)
                   .attr("y",318)
                   .attr("class","legendtext")
                   .attr("id","legendtext2")
                   .text("12")
             g_area.append("text")
-                  .attr("x",792)
+                  .attr("x",612)
                   .attr("y",333)
                   .attr("class","legendtext")
                   .attr("id","legendtext3")
                   .text("9")
             g_area.append("text")
-                  .attr("x",792)
+                  .attr("x",612)
                   .attr("y",348)
                   .attr("class","legendtext")
                   .attr("id","legendtext4")
                   .text("6")
             g_area.append("text")
-                  .attr("x",792)
+                  .attr("x",612)
                   .attr("y",363)
                   .attr("class","legendtext")
                   .attr("id","legendtext5")
                   .text("3")
             g_area.append("text")
-                  .attr("x",792)
+                  .attr("x",612)
                   .attr("y",378)
                   .attr("class","legendtext")
                   .attr("id","legendtext6")
                   .text("0")
             g_area.append("text")
-                  .attr("x",780)
+                  .attr("x",580)
                   .attr("y",290)
                   .attr("class","legendtext")
                   .attr("id","legendname")

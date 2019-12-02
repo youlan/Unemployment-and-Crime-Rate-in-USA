@@ -42,6 +42,7 @@ class StoryTelling {
     let that = this;
     let story = d3.select("#storyTelling");
     story.on("click", function() {
+      //window.location.reload();
       document.getElementById("myNav").style.width = "100%";
       
       let content = d3.select("#myNav").select(".overlay-content");
@@ -59,7 +60,7 @@ class StoryTelling {
       let c0Enter = c0.enter().append("text");
       c0 = c0Enter.merge(c0);
       d3.select(".story").append("rect")
-        .attr("x",100)
+        .attr("x",400)
         .attr("y",100)
         .attr("width",50)
         .attr("height",400)
