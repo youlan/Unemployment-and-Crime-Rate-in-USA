@@ -12,10 +12,9 @@ No other libraries are used in this project
 
 URLs to 
 1. github page
-https://github.com/blackispower/Unemployment-in-USA
+https://github.com/youlan/Unemployment-and-Crime-Rate-in-the-US
 2. project websites:
 https://youlan.github.io/Unemployment-and-Crime-Rate-in-the-US/
-3. screencast videos:
 
 
 
